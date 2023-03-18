@@ -1,8 +1,3 @@
 {
-  "extends": ["react-app", "react-app/jest", "airbnb", "prettier"],
-  "rules": {
-    "react/react-in-jsx-scope": "off",
-    "react/jsx-no-useless-fragment": "off",
-    "global-require": "off"
-  }
+  "extends": ["react-app", "react-app/jest", "prettier"]
 }
