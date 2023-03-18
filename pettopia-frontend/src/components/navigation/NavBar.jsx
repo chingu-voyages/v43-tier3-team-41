@@ -1,9 +1,8 @@
 export default function NavBar() {
   return (
     <>
-      <nav>
-        <h1>Testing</h1>
-        <div className='navbar bg-base-100'>
+      <header className="w-100">
+        <div className='navbar container'>
           <div className='flex-1'>
             <a href='/' className='btn btn-ghost normal-case text-xl'>
               daisyUI
@@ -42,7 +41,7 @@ export default function NavBar() {
             </ul>
           </div>
         </div>
-      </nav>
+      </header>
     </>
   );
 }
