@@ -8,12 +8,12 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <div className="container">
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/search' element={<SearchPage />} />
-        <Route path='/product_for_now' element={<ProductDetail />} />
-      </Routes>
+      <div className='container'>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/search' element={<SearchPage />} />
+          <Route path='/product_for_now' element={<ProductDetail />} />
+        </Routes>
       </div>
     </BrowserRouter>
   );
