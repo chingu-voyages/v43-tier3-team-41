@@ -16,9 +16,10 @@ app.use('/api/v1/categories', require('./routes/category.routes'))
 app.use('/api/v1/users', require('./routes/user.routes'))
 app.use('/api/v1/roles', require('./routes/role.routes'))
 app.use('/api/v1/auth', require('./routes/auth.routes'))
+app.use('/api/v1/test', require('./routes/test.routes'))
 
 app.get('/', (req,res)=>{
-  res.json({msg: 'Welcome to my API'})
+  res.status(200).json({msg: `Pettopia Application! Use endpoints in format 'api/v1/* for queries'`})
 })
 
 module.exports=app

@@ -1,42 +1,47 @@
-const Product = require("../models/Product");
+//const fs = require('fs');
+const ProductModel = require("../models/Product");
 
 const CTRL = {};
 
 CTRL.getProducts = (req, res) => {
-  res.send('returning all products')
-  // Product.find({})
-  //   .populate("category")
-  //   .exec((err, products) => {
-  //     if (err) {
-  //       return res.status(500).json({
-  //         ok: false,
-  //         err
-  //       })
-  //     }
-  //     res.json({
-  //       ok: true,
-  //       products,
-  //     });
-  //   });
+  const q = req.query.q;
+  if(q){
+    console.log(`query parameter ${q}`)
+    ProductModel.find({"name": new RegExp(q, 'i')})
+    .then(data =>{
+        res.status(200).json(data);
+    })
+    .catch((err)=>{
+      res.status(500).json({msg:'Error retrieving products!'})
+    })
+  }
+  else{
+    ProductModel.find()
+    .then(data =>{
+        res.status(200).json(data);
+    })
+    .catch((err)=>{
+      res.status(500).json({msg:'Error retrieving products!'})
+    })
+  } 
 };
 
 CTRL.getProduct = (req, res) => {
   const { productId } = req.params;
-  res.send(`returning product : ${productId}`);
-  // Product.findById(productId)
-  //   .populate("category")
-  //   .exec((err, product) => {
-  //     if (err) {
-  //       return res.status(500).json({
-  //         ok: false,
-  //         err
-  //       })
-  //     }
-  //     res.json({
-  //       ok: true,
-  //       product,
-  //     });
-  //   });
+  
+  Product.find({"productId":productId})
+    .exec((err, product) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          err
+        })
+      }
+      res.json({
+        ok: true,
+        product,
+      });
+    });
 };
 
 CTRL.createProduct = (req, res) => {
