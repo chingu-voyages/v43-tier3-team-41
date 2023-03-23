@@ -139,6 +139,13 @@ export default function NavBar() {
               </li>
             </ul>
           </div>
+          <div className='form-control flex-none gap-2'>
+            <input
+              type='text'
+              placeholder='Search'
+              className='input input-bordered'
+            />
+          </div>
           <div className='navbar-end'>
             <div className='dropdown dropdown-end'>
               <label tabIndex={0} className='btn'>
