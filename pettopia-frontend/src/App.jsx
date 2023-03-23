@@ -8,7 +8,7 @@ function App() {
   return (
     <BrowserRouter>
       <NavBar />
-      <div className='container'>
+      <div className='container relative -z-50'>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/search' element={<SearchPage />} />

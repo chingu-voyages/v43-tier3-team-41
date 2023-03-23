@@ -45,7 +45,6 @@ export default function NavBar() {
   };
 
   return (
-    <>
       <header className='w-100'>
         <div className='navbar bg-base-100 container sticky'>
           <div className='navbar-start'>
@@ -171,6 +170,5 @@ export default function NavBar() {
           </div>
         </div>
       </header>
-    </>
   );
 }
