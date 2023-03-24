@@ -45,7 +45,6 @@ export default function NavBar() {
   };
 
   return (
-    <>
       <header className='w-100'>
         <div className='navbar bg-base-100 container sticky'>
           <div className='navbar-start'>
@@ -139,6 +138,13 @@ export default function NavBar() {
               </li>
             </ul>
           </div>
+          <div className='form-control flex-none gap-2'>
+            <input
+              type='text'
+              placeholder='Search'
+              className='input input-bordered'
+            />
+          </div>
           <div className='navbar-end'>
             <div className='dropdown dropdown-end'>
               <label tabIndex={0} className='btn'>
@@ -164,6 +170,5 @@ export default function NavBar() {
           </div>
         </div>
       </header>
-    </>
   );
 }
