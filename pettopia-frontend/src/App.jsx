@@ -3,6 +3,7 @@ import NavBar from './components/navigation/NavBar';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/SearchPage';
 import ProductDetail from './pages/ProductPage/ProductDetail';
+import PageNotFound from './pages/PageNotFound/PageNotFound';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='/product_for_now' element={<ProductDetail />} />
+          <Route path='*' element={<PageNotFound/>} />
         </Routes>
       </div>
     </BrowserRouter>
