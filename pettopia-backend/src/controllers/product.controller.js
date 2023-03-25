@@ -1,7 +1,9 @@
 //const fs = require('fs');
 const ProductModel = require("../models/Product");
+
 const ProductDetailModel = require("../models/ProductDetail");
 const ProductReviewModel = require("../models/ProductReview");
+
 const CTRL = {};
 
 CTRL.getProducts = (req, res) => {
