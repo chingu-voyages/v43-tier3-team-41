@@ -1,10 +1,10 @@
 import SearchPageListItem from "./SearchPageListItem"
 
 
-const SearchPageContentList = ({searchPageItems}) => {
+const SearchPageContentList = ({filteredItems}) => {
   return (
         <ul className="grid grid-cols-3 gap-3">
-            {searchPageItems.map((item) => {
+            {filteredItems.map((item) => {
                 return <SearchPageListItem 
                 item={item}
                 /> 

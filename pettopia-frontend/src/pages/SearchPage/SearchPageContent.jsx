@@ -1,11 +1,11 @@
 import SearchPageContentList from './SearchPageContentList';
 import SearchPageFilter from './SearchPageFilter';
 
-const SearchPageContent = ({ searchPageItems }) => {
+const SearchPageContent = ({ filteredItems }) => {
   return (
     <main className='flex mt-4'>
       <SearchPageFilter />
-      <SearchPageContentList searchPageItems={searchPageItems} />
+      <SearchPageContentList filteredItems={filteredItems} />
     </main>
   );
 };

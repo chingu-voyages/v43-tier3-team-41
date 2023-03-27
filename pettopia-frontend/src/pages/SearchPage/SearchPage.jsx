@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 // import SearchPageFilter from './SearchPageFilter';
 
 const SearchPage = () => {
-  // const [searchPageItems, setSearchPageItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(12);
@@ -14,7 +13,6 @@ const SearchPage = () => {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        // setSearchPageItems(data.products);
         setFilteredItems(data.products);
       } catch (error) {
         console.log(error);
@@ -50,7 +48,7 @@ const SearchPage = () => {
         searchPageItems={searchPageItems}
         onFilterChange={handleFilterChange}
       /> */}
-      <SearchPageContent searchPageItems={currentItems} />
+      <SearchPageContent filteredItems={currentItems} />
       {totalPages > 1 && (
         <div className='flex justify-center mt-4'>
           <button
