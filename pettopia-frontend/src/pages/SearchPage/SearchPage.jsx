@@ -10,7 +10,7 @@ export default function SearchPage() {
       try {
         const response = await fetch(API_URL);
         const data = await response.json();
-        setSearchPageItems(data);
+        setSearchPageItems(data.products);
       } catch (error) {
         console.log(error);
       }
