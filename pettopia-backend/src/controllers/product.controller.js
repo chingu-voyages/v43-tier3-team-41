@@ -78,12 +78,6 @@ CTRL.getProducts = (req, res) => {
 CTRL.getProduct = (req, res) => {
   const { productId } = req.params;
   
-  ProductModel.find({"productId":productId})
-    .exec((err, product) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          err
   let product = {
     name:'',
     price:0,
