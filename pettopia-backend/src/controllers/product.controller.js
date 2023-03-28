@@ -1,6 +1,9 @@
 //const fs = require('fs');
 const ProductModel = require("../models/Product");
 
+
+const ProductDetailModel = require("../models/ProductDetail");
+const ProductReviewModel = require("../models/ProductReview");
 const CTRL = {};
 
 CTRL.test = (req, res) =>{
@@ -10,25 +13,66 @@ CTRL.test = (req, res) =>{
 
 CTRL.getProducts = (req, res) => {
   const q = req.query.q;
-  if(q){
+  let query;
+  try{
+      if(q){
     console.log(`query parameter ${q}`)
-    ProductModel.find({"name": new RegExp(q, 'i')})
-    .then(data =>{
-        res.status(200).json(data);
-    })
-    .catch((err)=>{
-      res.status(500).json({msg:'Error retrieving products!'})
-    })
+    query = ProductModel.find({"name": new RegExp(q, 'i')}).exec()
+    }
+    else {
+      query = ProductModel.find().exec();
+    }  
   }
-  else{
-    ProductModel.find()
-    .then(data =>{
-        res.status(200).json(data);
+  catch(err){
+    return res.status(500).json({
+              ok: false,
+              err
+            })
+  }
+  
+  let retrievedProducts = [];
+  query.then(dbProducts =>{
+      return Promise.all(dbProducts.map(async (dbProduct) =>({
+        
+        name : dbProduct.name,
+        price : dbProduct.price,
+        rating : dbProduct.rating,
+        mainImageUrl : dbProduct.imageUrl,
+        otherImages : await ProductDetailModel.findOne({"productId":dbProduct.productId})
+        .then(productDetail =>{
+          console.log(`${JSON.stringify(productDetail.images)}`)
+          return productDetail.images
+        })
+        .catch(err =>{
+          console.log(`no images found`);
+          return []
+        }),
+        categories : await ProductDetailModel.findOne({"productId":dbProduct.productId})
+        .then(productDetail =>{
+          console.log(`${JSON.stringify(productDetail.categories)}`)
+          return productDetail.categories
+        })
+        .catch(err =>{
+          console.log('no categories found')
+          return []
+        }),
+        reviews : await ProductReviewModel.find({"productId":dbProduct.productId})
+        .then(productReviews => productReviews.map(review =>({
+              text:review.text,
+              title:review.title,
+              rating:review.rating
+            })))
+        .catch(err =>[])
+        })
+      ))
     })
-    .catch((err)=>{
-      res.status(500).json({msg:'Error retrieving products!'})
+  .then(products =>{
+    res.status(200).json({
+      ok:true,
+      products
     })
-  } 
+  })
+
 };
 
 CTRL.getProduct = (req, res) => {
@@ -40,13 +84,52 @@ CTRL.getProduct = (req, res) => {
         return res.status(500).json({
           ok: false,
           err
+  let product = {
+    name:'',
+    price:0,
+    rating:0,
+    mainImageUrl:'',
+    otherImages:[],
+    categories:[],
+    reviews:[]
+  }
+  ProductModel.findOne({"productId":productId})
+    .then(async productDetail => {
+      
+      product.name = productDetail.name;
+      product.price = productDetail.price;
+      product.rating = productDetail.rating;
+      product.mainImageUrl = productDetail.imageUrl
+      await ProductDetailModel.findOne({"productId":productId})
+        .then(productDetail =>{
+          product.otherImages = productDetail.images
         })
-      }
-      res.json({
-        ok: true,
-        product,
-      });
-    });
+      await ProductDetailModel.findOne({"productId":productId})
+        .then(productDetail =>{
+          product.categories = productDetail.categories
+        })
+      await ProductReviewModel.find({"productId":productId}).exec()
+        .then(productReviews =>{
+          product.reviews = productReviews.map(review =>{
+            return ({
+              text:review.text,
+              title:review.title
+            })
+          })
+        })
+      
+      res.status(200).json({
+            ok:true,
+            product
+          })
+    })
+  .catch(err =>{
+      return res.status(500).json({
+              ok: false,
+              err
+            })
+  })
+  
 };
 
 CTRL.createProduct = (req, res) => {
