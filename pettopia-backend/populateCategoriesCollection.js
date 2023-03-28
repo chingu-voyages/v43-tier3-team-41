@@ -3,18 +3,18 @@ const ProductModel = require('./src/models/Product');
 const SerpApi = require('google-search-results-nodejs');
 const search = new SerpApi.GoogleSearch("6a2fc7974496083d6ac3a2a1e6c55efa2835982b8b29955c31164bc4d7011873");
 
-const params = {
-  engine: "walmart",
-  query: "dog food",
-  cat_id: ""
-}
+const engine = "walmart";
+const targetCategories = 
+[
+	
+	]
 fs.ensureFileSync('products.json');
 const callback = function(scrapedData) {
   let data = scrapedData.organic_results.map(function (product, idx){
   	return {
 	  	productId:product.product_id,
 	  	name:product.title,
-	  	description:product.description ? product.description : '',
+	  	description:product.description,
 	  	price:product.primary_offer.offer_price,
 	  	imageUrl:product.thumbnail, 
 	  	productUrl:product.product_page_url,
