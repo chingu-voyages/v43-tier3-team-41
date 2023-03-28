@@ -6,11 +6,6 @@ const ProductDetailModel = require("../models/ProductDetail");
 const ProductReviewModel = require("../models/ProductReview");
 const CTRL = {};
 
-CTRL.test = (req, res) =>{
-  console.log('calling test endpoint')
-  res.status(200).json({'message':'!testing products endpoint'});
-}
-
 CTRL.getProducts = (req, res) => {
   const q = req.query.q;
   let query;
