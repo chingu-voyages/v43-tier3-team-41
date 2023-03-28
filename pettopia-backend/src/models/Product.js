@@ -1,16 +1,20 @@
 const mongoose = require("mongoose");
-const ProductModel = require('./ProductDetail');
-const ProductReview = require('./ProductReview');
+// const ProductModel = require('./ProductDetail');
+// const ProductReview = require('./ProductReview');
 const Schema = mongoose.Schema;
 
 const ProductSchema = new Schema({
   productId:{
     type:String, 
-    required:true
-  },
+    required:true,
+    unique:true
+  }, 
   name: {
     type: String,
     required: true,
+  },
+  description:{
+    type: String
   },
   price: {
     type: Number,
@@ -28,6 +32,6 @@ const ProductSchema = new Schema({
     type: Number,
     required: true
   }
-});
+}, {strict:true});
 
 module.exports = mongoose.model("Product", ProductSchema);
