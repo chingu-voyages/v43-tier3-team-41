@@ -3,6 +3,11 @@ const ProductModel = require("../models/Product");
 
 const CTRL = {};
 
+CTRL.test = (req, res) =>{
+  console.log('calling test endpoint')
+  res.status(200).json({'message':'!testing products endpoint'});
+}
+
 CTRL.getProducts = (req, res) => {
   const q = req.query.q;
   if(q){
@@ -29,7 +34,7 @@ CTRL.getProducts = (req, res) => {
 CTRL.getProduct = (req, res) => {
   const { productId } = req.params;
   
-  Product.find({"productId":productId})
+  ProductModel.find({"productId":productId})
     .exec((err, product) => {
       if (err) {
         return res.status(500).json({

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 const ProductModel = require('./Product');
+const CART_ITEM_STATUS = require('../constants');
 const CartItemSchema = new mongoose.Schema({
-    item:{
-        type:mongoose.Types.ObjectId,
-        ref:ProductModel,
+    productId:{
+        type:String,
         required:true
     }, 
     quantity:{
@@ -13,18 +13,18 @@ const CartItemSchema = new mongoose.Schema({
 })
 
 const CartSchema = new mongoose.Schema({
-    userId:{
-        type:Number, 
-        required:true
-    }, 
-    items:{
-        type:mongoose.Types.ObjectId,
-        ref:CartItemSchema,
-        required:true
-    },
+    
+    items:[CartItemSchema],
     status:{
-        type:String,
-        require:true
+        type: String,
+        default: CART_ITEM_STATUS.Not_processed,
+        enum: [
+        CART_ITEM_STATUS.Not_processed,
+        CART_ITEM_STATUS.Processing,
+        CART_ITEM_STATUS.Shipped,
+        CART_ITEM_STATUS.Delivered,
+        CART_ITEM_STATUS.Cancelled
+        ]
     }
 
 })

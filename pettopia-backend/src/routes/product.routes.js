@@ -6,6 +6,7 @@ const { isAuth } = require("../middlewares/authentication");
 
 router.get("/", productCTRL.getProducts);
 router.get("/:productId", productCTRL.getProduct);
+router.get("/test", productCTRL.test);
 router.post("/", isAuth, productCTRL.createProduct);
 router.put("/:productId", isAuth, productCTRL.updateProduct);
 router.delete("/:productId", isAuth, productCTRL.deleteProduct);
