@@ -31,24 +31,37 @@ controller.addToCart = (req, res) => {
 		}
 	else{
 		
-			const cart = Cart.find({ _id: cartId }).exec()
+			const cart = Cart.findOne({ _id: cartId }).exec()
 			.then(async (cartObj) =>{
-				console.log(`here is the current cart - ${JSON.stringify(cartObj)}`)
-				let product = await Cart.find({_id:cartId}, {"items.productId": productId});
-				if(product){
-					product.quantity = product.quantity + 1;
-				}
-				else{
-					cartObj.items.push({
-						productId:productId, 
-						quantity: 1
-					})
-				}
-				
-					res.status(200).json({
+				//console.log(`here is the current cart - ${JSON.stringify(cartObj)}`)
+				let product = await Cart.findOne({_id:cartId, "items.productId": productId}).exec();
+				//console.log(`product - ${JSON.stringify(product)}`)
+				if(!product)
+					{
+					console.log(`product does not exist in this cart yet`);
+					Cart.updateOne({
+						_id:cartId
+						},
+						{$push: 
+							{items:{
+								productId:productId, 
+								quantity: 1
+								}
+						}})
+					.then(() =>{
+					//console.log(`cartObj is  - ${JSON.stringify(cartObj)}`)
+						res.status(200).json({
 						ok:true, 
 						cartId: cartObj._id
+						})
 					})
+				}
+				console.log(`product already exists in cart - ${JSON.stringify(cartObj)}`);
+				res.status(200).json({
+					ok:true,
+					cartId: cartObj._id
+				})
+					
 			})
 			.catch((err) =>{
 				res.status(500).
