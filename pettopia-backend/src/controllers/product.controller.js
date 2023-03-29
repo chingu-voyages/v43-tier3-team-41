@@ -11,7 +11,7 @@ CTRL.getProducts = (req, res) => {
   let query;
   try{
       if(q){
-    console.log(`query parameter ${q}`)
+    // console.log(`query parameter ${q}`)
     query = ProductModel.find({"name": new RegExp(q, 'i')}).exec()
     }
     else {
@@ -29,26 +29,27 @@ CTRL.getProducts = (req, res) => {
   query.then(dbProducts =>{
       return Promise.all(dbProducts.map(async (dbProduct) =>({
         
+        productId: dbProduct.productId,
         name : dbProduct.name,
         price : dbProduct.price,
         rating : dbProduct.rating,
         mainImageUrl : dbProduct.imageUrl,
         otherImages : await ProductDetailModel.findOne({"productId":dbProduct.productId})
         .then(productDetail =>{
-          console.log(`${JSON.stringify(productDetail.images)}`)
+          // console.log(`${JSON.stringify(productDetail.images)}`)
           return productDetail.images
         })
         .catch(err =>{
-          console.log(`no images found`);
+         // console.log(`no images found`);
           return []
         }),
         categories : await ProductDetailModel.findOne({"productId":dbProduct.productId})
         .then(productDetail =>{
-          console.log(`${JSON.stringify(productDetail.categories)}`)
+         // console.log(`${JSON.stringify(productDetail.categories)}`)
           return productDetail.categories
         })
         .catch(err =>{
-          console.log('no categories found')
+         // console.log('no categories found')
           return []
         }),
         reviews : await ProductReviewModel.find({"productId":dbProduct.productId})
@@ -72,7 +73,9 @@ CTRL.getProducts = (req, res) => {
 
 CTRL.getProduct = (req, res) => {
   const { productId } = req.params;
+  console.log(`productId is ${productId}`);
   let product = {
+    productId: -1,
     name:'',
     price:0,
     rating:0,
@@ -84,6 +87,7 @@ CTRL.getProduct = (req, res) => {
   ProductModel.findOne({"productId":productId})
     .then(async productDetail => {
       
+      product.productId =  productDetail.productId;
       product.name = productDetail.name;
       product.price = productDetail.price;
       product.rating = productDetail.rating;
@@ -105,12 +109,15 @@ CTRL.getProduct = (req, res) => {
             })
           })
         })
+      return product;
+      })
+      .then((product) =>{
       
-      res.status(200).json({
+      	res.status(200).json({
             ok:true,
             product
           })
-    })
+      })
   .catch(err =>{
       return res.status(500).json({
               ok: false,
