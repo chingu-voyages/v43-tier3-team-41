@@ -3,6 +3,7 @@ const Test = require("../models/Test");
 const CTRL = {};
 
 CTRL.getRows = (req, res) => {
+  console.log('getting test rows');
   Test.find({})
   
   .exec((err, names) => {

@@ -73,7 +73,6 @@ CTRL.getProducts = (req, res) => {
 
 CTRL.getProduct = (req, res) => {
   const { productId } = req.params;
-  console.log(`productId is ${productId}`);
   let product = {
     productId: -1,
     name:'',
