@@ -11,6 +11,7 @@ app.use(morgan('dev'))
 
 app.use('/api/v1/products', require('./routes/product.routes'))
 app.use('/api/v1/cart', require('./routes/cart.routes'))
+app.use('/api/v1/favorites', require('./routes/favorites.routes'))
 app.use('/api/v1/test', require('./routes/test.routes'))
 // unused routes
 app.use('/api/v1/orders', require('./routes/order.routes'))
