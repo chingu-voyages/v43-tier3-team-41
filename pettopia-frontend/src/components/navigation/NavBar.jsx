@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const THEMES = [
   'light',
@@ -34,6 +35,7 @@ const THEMES = [
 
 export default function NavBar() {
   const [theme, setTheme] = useState('light');
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -44,84 +46,57 @@ export default function NavBar() {
     setTheme(themeVal);
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(searchTerm);
+    setSearchTerm('');
+    navigate('/search');
+  };
+
   return (
-      <header className='w-100'>
-        <div className='navbar bg-base-100 container sticky'>
-          <div className='navbar-start'>
-            <div className='dropdown'>
-              <label
-                tabIndex={0}
-                className='btn btn-circle btn-primary lg:hidden'
+    <header className='w-100'>
+      <div className='navbar bg-base-100 container sticky z-10'>
+        <div className='navbar-start'>
+          <div className='dropdown'>
+            <label
+              tabIndex={0}
+              className='btn btn-circle btn-primary lg:hidden'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                className='h-5 w-5'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke='currentColor'
               >
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-5 w-5'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    d='M4 6h16M4 12h8m-8 6h16'
-                  />
-                </svg>
-              </label>
-              <ul
-                tabIndex={0}
-                className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
-              >
-                <li>
-                  <a href='/'>Item 1</a>
-                </li>
-                <li tabIndex={0}>
-                  <a href='/' className='justify-between'>
-                    Parent
-                    <svg
-                      className='fill-current'
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='24'
-                      height='24'
-                      viewBox='0 0 24 24'
-                    >
-                      <path d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' />
-                    </svg>
-                  </a>
-                  <ul className='p-2'>
-                    <li>
-                      <a href='/'>Submenu 1</a>
-                    </li>
-                    <li>
-                      <a href='/'>Submenu 2</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href='/'>Item 3</a>
-                </li>
-              </ul>
-            </div>
-            <a href='/' className='btn btn-ghost normal-case text-xl px-1'>
-              Pettopia
-            </a>
-          </div>
-          <div className='navbar-center hidden lg:flex'>
-            <ul className='menu menu-horizontal px-1'>
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M4 6h16M4 12h8m-8 6h16'
+                />
+              </svg>
+            </label>
+            <ul
+              tabIndex={0}
+              className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'
+            >
               <li>
                 <a href='/'>Item 1</a>
               </li>
               <li tabIndex={0}>
-                <a href='/'>
+                <a href='/' className='justify-between'>
                   Parent
                   <svg
                     className='fill-current'
                     xmlns='http://www.w3.org/2000/svg'
-                    width='20'
-                    height='20'
+                    width='24'
+                    height='24'
                     viewBox='0 0 24 24'
                   >
-                    <path d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z' />
+                    <path d='M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z' />
                   </svg>
                 </a>
                 <ul className='p-2'>
@@ -138,37 +113,100 @@ export default function NavBar() {
               </li>
             </ul>
           </div>
-          <div className='form-control flex-none gap-2'>
-            <input
-              type='text'
-              placeholder='Search'
-              className='input input-bordered'
-            />
-          </div>
-          <div className='navbar-end'>
-            <div className='dropdown dropdown-end'>
-              <label tabIndex={0} className='btn'>
-                Choose Page Theme
-              </label>
-              <ul
-                tabIndex={0}
-                className='dropdown-content mt-1 w-40 max-h-96 overflow-y-auto menu-compact p-2 bg-base-200 shadow rounded-box'
-              >
-                {THEMES.map((theme, i) => (
-                  <li key={theme + i}>
-                    <button
-                      data-set-theme={theme}
-                      onClick={handleThemeChange}
-                      className='font-medium capitalize'
-                    >
-                      {i + 1 + '. ' + theme}
-                    </button>
-                  </li>
-                ))}
+          <a href='/' className='btn btn-ghost normal-case text-xl px-1'>
+            Pettopia
+          </a>
+        </div>
+        <div className='navbar-center hidden lg:flex'>
+          <ul className='menu menu-horizontal px-1'>
+            <li>
+              <a href='/'>Item 1</a>
+            </li>
+            <li tabIndex={0}>
+              <a href='/'>
+                Parent
+                <svg
+                  className='fill-current'
+                  xmlns='http://www.w3.org/2000/svg'
+                  width='20'
+                  height='20'
+                  viewBox='0 0 24 24'
+                >
+                  <path d='M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z' />
+                </svg>
+              </a>
+              <ul className='p-2'>
+                <li>
+                  <a href='/'>Submenu 1</a>
+                </li>
+                <li>
+                  <a href='/'>Submenu 2</a>
+                </li>
               </ul>
-            </div>
+            </li>
+            <li>
+              <a href='/'>Item 3</a>
+            </li>
+          </ul>
+        </div>
+        <form
+          onSubmit={(e) => {
+            handleSubmit(e);
+          }}
+          className='form-control flex-none gap-2'
+        >
+          <div className="relative flex items-center">
+          <input
+            type='text'
+            placeholder='Search'
+            className='input input-bordered'
+            value={searchTerm}
+            onChange={(e) => {
+              setSearchTerm(e.target.value);
+            }}
+          />
+          <button type='submit' className='btn btn-ghost btn-circle absolute right-0 text-gray-400'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              className='h-5 w-5'
+              fill='none'
+              viewBox='0 0 24 24'
+              stroke='currentColor'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                strokeWidth='2'
+                d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'
+              />
+            </svg>
+          </button>
+          </div>
+        </form>
+        <div className='navbar-end'>
+          <div className='dropdown dropdown-end'>
+            <label tabIndex={0} className='btn'>
+              Choose Page Theme
+            </label>
+            <ul
+              tabIndex={0}
+              className='dropdown-content mt-1 w-40 max-h-96 overflow-y-auto menu-compact p-2 bg-base-200 shadow rounded-box'
+            >
+              {THEMES.map((theme, i) => (
+                <li key={theme + i}>
+                  <button
+                    data-set-theme={theme}
+                    onClick={handleThemeChange}
+                    className='font-medium capitalize'
+                  >
+                    {i + 1 + '. ' + theme}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
   );
 }
