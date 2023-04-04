@@ -61,11 +61,18 @@ controller.addToCart = (req, res) => {
 					})
 				}
 				else{
-					console.log(`product already exists in cart - ${JSON.stringify(cartObj)}`);
-						res.status(200).json({
-							ok:true,
+					
+					Cart.findOneAndUpdate({_id:id, "items.productId":productId}
+						, {$inc: {
+							"items.$.quantity": 1
+						}})
+					.then((cartObj) =>{
+						res.status(200)
+						.json({
+							ok:true, 
 							cartId: cartObj._id
 						})
+					})
 				}	
 			})
 			.catch((err) =>{
@@ -75,6 +82,54 @@ controller.addToCart = (req, res) => {
 					message: `add to cart failed with error ${err}`
 				})
 			})
+}
+controller.emptyCart = async (req, res) =>{
+	const id = req.params.id;
+	const productId = req.params.productId;
+	const cart = await Cart.findOneAndUpdate({_id:id}, 
+	{
+		$set:{"items":[]}
+	}).exec();
+	if(cart){
+			return res.status(200)
+						.json({
+								ok:true,
+								cartId:cart._id
+								})
+	}
+		res.status(500)
+			.json({
+			ok:false
+		})
+}
+controller.subtract = (req, res) =>{
+	const id = req.params.id;
+	const productId = req.params.productId;
+	Cart.findOne({ _id: id }).exec()
+	.then(async (cart) =>{
+		let product = await Cart.findOne({_id:id, "items.productId": productId}).exec();
+		if(!product){
+			return res.status(500).json({
+				ok:false, 
+				errorMsg:'product not present in cart!'
+			})
+		}
+		Cart.findOneAndUpdate({_id:id, "items.productId":productId}
+						, { $inc: {
+							"items.$.quantity": -1
+						}})
+					.then((cartObj) =>{
+						res.status(200)
+						.json({
+							ok:true, 
+							cartId: cartObj._id
+						})
+					})
+
+	})
+	.catch(err => res.status(500).json({
+		ok:false
+	}))
 }
 
 controller.removeProductFromCart = (req, res) => {
@@ -132,7 +187,6 @@ controller.removeProductFromCart = (req, res) => {
 			})
 	}
 }
-
 
 
 controller.getCart = (req, res) => {
