@@ -29,8 +29,12 @@ const SearchPageListItem = ({ item }) => {
           </p>
           <p>{item.description}</p>
           <div className='card-actions justify-end'>
-            <div className='badge badge-outline'>Fashion</div>
-            <div className='badge badge-outline'>Products</div>
+            {item.categories.map(category => {
+                return(
+                  <div className='badge badge-outline'>{category}</div>
+                )
+              })
+            }
           </div>
         </div>
       </div>
