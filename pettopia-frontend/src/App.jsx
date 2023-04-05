@@ -3,6 +3,7 @@ import NavBar from './components/navigation/NavBar';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/MainContent/SearchPage';
 import ProductDetail from './pages/ProductPage/ProductDetail';
+import { SearchProvider } from './Context/SearchContext/SearchContext';
 import CartPage from './pages/CartPage';
 import AppContext from './AppContext';
 import LoginPage from './pages/LoginPage'
@@ -15,6 +16,7 @@ function App() {
       cartId
     }}>
         <BrowserRouter>
+        <SearchProvider>
         <NavBar />
         <div className='container z-0'>
         <Routes>
@@ -26,9 +28,9 @@ function App() {
           <Route path='/product_for_now' element={<ProductDetail />} />
         </Routes>
         </div>
+        </SearchProvider>
     </BrowserRouter>
     </AppContext.Provider>
-    
   );
 }
 

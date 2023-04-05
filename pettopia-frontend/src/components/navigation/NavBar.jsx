@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import SearchContext from '../../Context/SearchContext/SearchContext';
 
 const THEMES = [
   'light',
@@ -35,7 +36,6 @@ const THEMES = [
 
 export default function NavBar() {
   const [theme, setTheme] = useState('light');
-  const navigate = useNavigate();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -46,14 +46,7 @@ export default function NavBar() {
     setTheme(themeVal);
   };
 
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(searchTerm);
-    setSearchTerm('');
-    navigate('/search');
-  };
+  const {handleSubmit, searchTerm, setSearchTerm} = useContext(SearchContext);
 
   return (
     <header className='w-100'>
