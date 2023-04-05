@@ -4,9 +4,6 @@ import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/MainContent/SearchPage';
 import ProductDetail from './pages/ProductPage/ProductDetail';
 import CartPage from './pages/CartPage';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword'
 import AppContext from './AppContext';
 
 function App() {
