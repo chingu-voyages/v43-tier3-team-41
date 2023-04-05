@@ -14,7 +14,7 @@ const SearchPageListItem = ({ item }) => {
         <figure>
           <img className='' src={item.mainImageUrl} alt={item.name} />
         </figure>
-        <div className='card-body'>
+        <div className='card-body min-h-[190px]'>
           <h2 className='card-title'>
             {`${brand}`}
             <div className='badge badge-secondary'>{`$${item.price}`}</div>
