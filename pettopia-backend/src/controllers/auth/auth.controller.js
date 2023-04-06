@@ -35,7 +35,7 @@ CTRL.login = (req, res) => {
     }
 
     let token = jwt.sign({ data: user }, config.SECRET_KEY, {
-      expiresIn: "2h",
+      expiresIn: "12h",
     });
 
     return res.status(201).json({

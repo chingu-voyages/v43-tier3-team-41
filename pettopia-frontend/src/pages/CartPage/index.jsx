@@ -7,12 +7,13 @@ export default function CartPage (){
 	const navigate = useNavigate();
 	const [cartItems, setCartItems] = useState([]);
 	const [fetchingData, setFetchingData] = useState(false);
+	const backendUrl = 'https://pettopia-backend.onrender.com'
 	useEffect(() =>console.log(authToken))
 	const getCart = () =>{
-		fetch(`http://localhost:5000/api/v1/cart`, {
+		fetch(`${backendUrl}/api/v1/cart`, {
 			method:'GET',
 			headers: {
-				'CONTENT-TYPE':'applicaiton/json',
+				'CONTENT-TYPE':'application/json',
 				'Authorization':authToken
 			}
 		})
@@ -35,7 +36,7 @@ export default function CartPage (){
 		else getCart();
 	}, [])
 	const checkoutCart = () =>{
-		fetch('http://localhost:5000/api/v1/orders',{
+		fetch(`${backendUrl}/api/v1/orders`,{
 			method: 'POST',
 			headers:{
 							'Content-Type': 'application/json', 
@@ -51,7 +52,7 @@ export default function CartPage (){
 		}
 		else{
 			setFetchingData(true);
-			fetch(`http://localhost:5000/api/v1/cart/add/${productId}`, {
+			fetch(`${backendUrl}/api/v1/cart/add/${productId}`, {
 				 method: 'POST',
 	        headers: { 
 	        	'Content-Type': 'application/json',
@@ -76,7 +77,7 @@ export default function CartPage (){
 			setFetchingData(true);
 		if(cartItems.find(cartItem => cartItem.product.productId == productId && cartItem.quantity == 1)){
 			//console.log(`item count is 1, so removing item from cart`);
-			fetch(`http://localhost:5000/api/v1/cart/remove/${productId}`, {
+			fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
 						 method: 'POST',
 			        headers: { 
 			        	'Content-Type': 'application/json', 
@@ -91,7 +92,7 @@ export default function CartPage (){
 						.catch(err => console.error(err));
 					}
 		else{
-			fetch(`http://localhost:5000/api/v1/cart/subtract/${productId}`, {
+			fetch(`${backendUrl}/api/v1/cart/subtract/${productId}`, {
 			 method: 'POST',
         headers: { 
         	'Content-Type': 'application/json',

@@ -5,12 +5,13 @@ export default function Orders(){
 	const { authToken } = useContext(AppContext);
 	const [orders, setOrders] = useState([]);
 	const navigate = useNavigate();
+	const backendUrl = 'https://pettopia-backend.onrender.com'
 	useEffect(() =>{
 		if(authToken == null){
 			navigate('/login')
 		}
 		else{
-				fetch('http://localhost:5000/api/v1/orders', {
+				fetch(`${backendUrl}/api/v1/orders`, {
 			method:"GET",
 			headers:{
 							'Content-Type': 'application/json', 
