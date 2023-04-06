@@ -6,7 +6,7 @@ const { isAuth } = require('../middlewares/authentication')
 
 router.get('/', userCTRL.getUsers)
 router.get('/:userId', userCTRL.getUser)
-router.post('/', isAuth, userCTRL.createUser)
+router.post('/', userCTRL.createUser)
 router.put('/:userId', isAuth, userCTRL.updateUser)
 router.delete('/:userId', isAuth, userCTRL.deleteUser)
 
