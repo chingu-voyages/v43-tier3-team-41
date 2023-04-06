@@ -6,13 +6,17 @@ const isAuth = (req, res, next) => {
 
   jwt.verify(token, config.SECRET_KEY, (err, user) => {
     if (err) {
-      return res.status(500).json({
+      return res.status(401).json({
         ok: false,
-        msg: "Token invalid!",
+        msg: "Token invalid! Not authorized!",
       });
     }
 
-    req.user = user.data;
+    req.user = {
+      id: user.data._id,
+    	username:user.data.username, 
+    	email:user.data.email
+    };
 
     next();
   });

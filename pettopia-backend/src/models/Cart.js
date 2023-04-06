@@ -13,7 +13,11 @@ const CartItemSchema = new mongoose.Schema({
 })
 
 const CartSchema = new mongoose.Schema({
-    
+    userId:{
+        type:String,
+        required:true,
+        unique:true
+    },
     items:[CartItemSchema],
     status:{
         type: String,
