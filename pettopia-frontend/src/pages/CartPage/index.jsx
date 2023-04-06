@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import AppContext from '../../AppContext';
 import DeleteIcon from '../../components/deleteIcon';
 export default function CartPage (){
-	const { cartId, authToken } = useContext(AppContext);
+	const { authToken } = useContext(AppContext);
 	const navigate = useNavigate();
 	const [cartItems, setCartItems] = useState([]);
 	const [fetchingData, setFetchingData] = useState(false);
@@ -19,7 +19,7 @@ export default function CartPage (){
 		.then(res =>res.json())
 		.then(data=>{
 //			console.log(`${JSON.stringify(data)}`);
-			setCartItems(data.cartItems);
+			if(data.cartItems) setCartItems(data.cartItems);
 			
 		})
 		.catch(err =>{
@@ -34,7 +34,17 @@ export default function CartPage (){
 		}
 		else getCart();
 	}, [])
-	
+	const checkoutCart = () =>{
+		fetch('http://localhost:5000/api/v1/orders',{
+			method: 'POST',
+			headers:{
+							'Content-Type': 'application/json', 
+			        'Authorization':authToken
+						}
+				})
+		.then(res => res.json())
+		.then(() =>navigate('/orders'))
+	}
 	const increaseItemQty = (productId) =>{
 		if(authToken==null){
 			navigate('/login')
@@ -114,7 +124,7 @@ export default function CartPage (){
 					<span>:</span>
 					<div>$</div>
 					<div className="text-lg">{calculateSum().toFixed(2)}</div>
-					<div className="btn btn-outline">
+					<div className="btn btn-outline" onClick={checkoutCart}>
 						Checkout
 					</div>
 				</div>

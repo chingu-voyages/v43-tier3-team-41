@@ -5,3 +5,11 @@ const CART_ITEM_STATUS = {
   Cancelled: 'Cancelled',
   Not_processed: 'Not processed'
 };
+const ORDER_STATUS ={
+  Placed:'Placed',
+  Cancelled:'Cancelled'
+}
+module.exports = {
+  CART_ITEM_STATUS : CART_ITEM_STATUS,
+  ORDER_STATUS : ORDER_STATUS
+}
