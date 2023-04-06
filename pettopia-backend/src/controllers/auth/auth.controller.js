@@ -7,7 +7,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 CTRL.login = (req, res) => {
-  User.findOne({ username: req.body.username }, (err, user) => {
+  console.log(req.body.email)
+  // User.findOne({email:req.body.email})
+  // .then(user =>{
+  //   console.log(`${JSON.stringify(user)}`)
+  // })
+  User.findOne({ email: req.body.email }, (err, user) => {
     if (err) {
       return res.status(500).json({
         ok: false,
@@ -30,12 +35,11 @@ CTRL.login = (req, res) => {
     }
 
     let token = jwt.sign({ data: user }, config.SECRET_KEY, {
-      expiresIn: "2h",
+      expiresIn: "12h",
     });
 
     return res.status(201).json({
       ok: true,
-      user,
       token,
     });
   });

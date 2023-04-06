@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   displayName: {
     type: String,
-    required: true,
+    //required: true,
   },
   email: {
     type: String,
@@ -25,18 +25,22 @@ const UserSchema = new Schema({
     type: String,
     maxlength: 512,
   },
-  role: {
-    type: Schema.Types.ObjectId,
-    ref: 'Role',
-  },
-  status: {
-    type: Boolean,
-    default: true,
-  },
+  // role: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Role',
+  // },
+  // status: {
+  //   type: Boolean,
+  //   default: true,
+  // },
   created_at: {
     type: Date,
     default: Date.now,
   },
 });
 
+UserSchema.pre('save', (next) => {
+    this.displayName = this.username; // considering _id is input by client
+   next();
+})
 module.exports = mongoose.model("User", UserSchema);

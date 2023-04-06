@@ -4,7 +4,7 @@ const orderCTRL = require("../controllers/order.controller");
 
 const { isAuth } = require("../middlewares/authentication");
 
-router.get("/", orderCTRL.getOrders);
+router.get("/", isAuth, orderCTRL.getOrders);
 router.get("/:orderId", orderCTRL.getOrder);
 router.post("/", isAuth, orderCTRL.createOrder);
 //router.put("/:orderId", isAuth, orderCTRL.updateOrder);

@@ -43,6 +43,15 @@ CTRL.getProducts = (req, res) => {
          // console.log(`no images found`);
           return []
         }),
+        brand: await ProductDetailModel.findOne({"productId":dbProduct.productId})
+        .then(productDetail =>{
+          // console.log(`${JSON.stringify(productDetail.images)}`)
+          return productDetail.brand ?? ''
+        })
+        .catch(err =>{
+         // console.log(`no images found`);
+          return ''
+        }),
         categories : await ProductDetailModel.findOne({"productId":dbProduct.productId})
         .then(productDetail =>{
          // console.log(`${JSON.stringify(productDetail.categories)}`)
@@ -91,6 +100,10 @@ CTRL.getProduct = (req, res) => {
       product.price = productDetail.price;
       product.rating = productDetail.rating;
       product.mainImageUrl = productDetail.imageUrl
+      await ProductDetailModel.findOne({"productId":productId})
+        .then(productDetail =>{
+          product.brand = productDetail.brand ?? ''
+        })
       await ProductDetailModel.findOne({"productId":productId})
         .then(productDetail =>{
           product.otherImages = productDetail.images
