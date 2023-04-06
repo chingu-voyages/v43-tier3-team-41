@@ -23,7 +23,7 @@ export default function Signup(){
   const createAccount=()=>{
     let signUpFields = {
       username:signupState['username'],
-      email:signupState['email'],
+      email:signupState['email-address'],
       password:signupState['password']
     }
     fetch('https://pettopia-backend.onrender.com/api/v1/user', {
