@@ -7,6 +7,10 @@ const ProductDetailSchema = new Schema({
   //   type:String, 
   //   required:true
   // },
+  brand:{
+    type:String, 
+    default:''
+  },
   productId:{
   	type:String, 
   	required:true
