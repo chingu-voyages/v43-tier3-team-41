@@ -21,7 +21,18 @@ export default function Signup(){
 
   //handle Signup API Integration here
   const createAccount=()=>{
-
+    let signUpFields = {
+      username:signupState['username'],
+      email:signupState['email'],
+      password:signupState['password']
+    }
+    fetch('https://pettopia-backend.onrender.com/api/v1/user', {
+      method:'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(signUpFields)
+    })
+    .then((res) => res.json())
+    .then(data => console.log(data.token));
   }
 
     return(

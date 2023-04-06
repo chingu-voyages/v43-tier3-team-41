@@ -1,16 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { loginFields } from "./constants/formFields";
+import { useNavigate } from 'react-router-dom';
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
+import AppContext from '../../AppContext';
 
 const fields=loginFields;
 let fieldsState = {};
 fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
+    const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
-
+    const { authToken, setAuthToken } = useContext(AppContext);
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
     }
@@ -24,26 +27,34 @@ export default function Login(){
     const authenticateUser = () =>{
         
      
-        // let loginFields={
-        //         email:loginState['email-address'],
-        //         password:loginState['password']
-        // };
+        let loginFields={
+                email:loginState['email-address'],
+                password:loginState['password']
+        };
            
-        // const endpoint=`https://api.loginradius.com/identity/v2/auth/login?apikey=${apiKey}&apisecret=${apiSecret}`;
-        //  fetch(endpoint,
-        //      {
-        //      method:'POST',
-        //      headers: {
-        //      'Content-Type': 'application/json'
-        //      },
-        //      body:JSON.stringify(loginFields)
-        //      }).then(response=>response.json())
-        //      .then(data=>{
-        //         //API Success from LoginRadius Login API
-        //      })
-        //      .catch(error=>console.log(error))
+        const endpoint=`http://localhost:5000/api/v1/auth/login`;
+         fetch(endpoint,
+             {
+             method:'POST',
+             headers: {
+             'Content-Type': 'application/json'
+             },
+             body:JSON.stringify(loginFields)
+             })
+            .then(response=>response.json())
+            .then(data=>{
+                //API Success from LoginRadius Login API
+                setAuthToken(data.token);
+                navigate('/cart');
+             })
+            
+            .catch(error=>console.log(error))
          }
-    
+    // useEffect(() =>{
+    //     console.log(`setting localStorage token`);
+    //     window.localStorage.setItem('token', authToken);
+    //     navigate('/cart');
+    // }, [authToken]);
 
     return(
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

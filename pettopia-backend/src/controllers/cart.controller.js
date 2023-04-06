@@ -30,21 +30,27 @@ controller.addToNewCart = (req, res) =>{
 			});
 		})
 }
-controller.addToCart = (req, res) => {
-	console.log('calling add to cart!');
-	const id = req.params.id;
+controller.addToCart = async (req, res) => {
+	const userId = req.user.id;
 	const productId = req.params.productId;
-	console.log(`cart id is  - ${id}`);
-	const cart = Cart.findOne({ _id: id }).exec()
-			.then(async (cartObj) =>{
-				//console.log(`here is the current cart - ${JSON.stringify(cartObj)}`)
-				let product = await Cart.findOne({_id:id, "items.productId": productId}).exec();
+	console.log(`user ${JSON.stringify(req.user)} adding product ${productId} to cart!`);
+	console.log(`user id is  - ${userId}`);
+	const cart = await Cart.findOne({ userId: userId });
+	const product = await Product.findOne({productId: productId}); 
+	if(!product){
+		return res.status(500).json({
+			ok:false,
+			errorMsg:'Invalid product'
+		});
+	}
+	if(cart){
+		let product = await Cart.findOne({userId: userId, "items.productId": productId}).exec();
 				//console.log(`product - ${JSON.stringify(product)}`)
 				if(!product)
 					{
 					console.log(`product does not exist in this cart yet`);
 					Cart.updateOne({
-						_id:id
+						userId: userId
 						},
 						{$push: 
 							{items:{
@@ -52,41 +58,74 @@ controller.addToCart = (req, res) => {
 								quantity: 1
 								}
 						}})
-					.then(() =>{
+					.then((cartObj) =>{
 					//console.log(`cartObj is  - ${JSON.stringify(cartObj)}`)
 						return res.status(200).json({
 						ok:true, 
 						cartId: cartObj._id
 						})
 					})
+					.catch(err =>{
+						res.status(500).
+							json({
+								ok:false, 
+								message: `add to cart failed with error ${err}`
+							})
+					})
 				}
 				else{
-					
-					Cart.findOneAndUpdate({_id:id, "items.productId":productId}
+					console.log(`product to increase quantity - ${JSON.stringify(product)}`)
+					Cart.findOneAndUpdate({userId:userId, "items.productId":productId}
 						, {$inc: {
 							"items.$.quantity": 1
 						}})
 					.then((cartObj) =>{
-						res.status(200)
+						return res.status(200)
 						.json({
 							ok:true, 
 							cartId: cartObj._id
 						})
 					})
-				}	
+					.catch(err => {
+						return res.status(500).
+							json({
+									ok:false, 
+									message: `add to cart failed with error ${err}`
+								})
+					})
+				}
+	}
+	else
+	{
+		const newCart = new Cart({
+			userId: userId, 
+			items:[{
+				productId:productId, 
+				quantity:1
+			}]
+		})
+		newCart.save()
+		.then((cart) =>{
+			res.status(200)
+			.json({
+				ok:true, 
+				cartId:cart._id
 			})
-			.catch((err) =>{
-				res.status(500).
-				json({
-					ok:false, 
-					message: `add to cart failed with error ${err}`
+		})
+		.catch((err) =>{
+					return res.status(500).
+					json({
+						ok:false, 
+						message: `add to cart failed with error ${err}`
+					})
 				})
-			})
-}
+		}
+	}
+
 controller.emptyCart = async (req, res) =>{
-	const id = req.params.id;
+	const userId = req.user.id;
 	const productId = req.params.productId;
-	const cart = await Cart.findOneAndUpdate({_id:id}, 
+	const cart = await Cart.findOneAndUpdate({userId:userId}, 
 	{
 		$set:{"items":[]}
 	}).exec();
@@ -103,18 +142,18 @@ controller.emptyCart = async (req, res) =>{
 		})
 }
 controller.subtract = (req, res) =>{
-	const id = req.params.id;
+	const userId = req.user.id;
 	const productId = req.params.productId;
-	Cart.findOne({ _id: id }).exec()
+	Cart.findOne({ userId: userId }).exec()
 	.then(async (cart) =>{
-		let product = await Cart.findOne({_id:id, "items.productId": productId}).exec();
+		let product = await Cart.findOne({userId: userId, "items.productId": productId}).exec();
 		if(!product){
 			return res.status(500).json({
 				ok:false, 
 				errorMsg:'product not present in cart!'
 			})
 		}
-		Cart.findOneAndUpdate({_id:id, "items.productId":productId}
+		Cart.findOneAndUpdate({userId: userId, "items.productId":productId}
 						, { $inc: {
 							"items.$.quantity": -1
 						}})
@@ -134,23 +173,23 @@ controller.subtract = (req, res) =>{
 
 controller.removeProductFromCart = (req, res) => {
 	console.log('calling remove from cart!');
-	const id = req.params.id;
+	const userId = req.user.id;
 	const productId = req.params.productId;
 	// const productId = req.body.productId;
 	console.log(`${typeof productId}`);
 	let cart;
-	if (!id){
+	if (!userId){
 		res.status(500).json({
 			ok:true, 
-			errorMsg:`no cartId parameter in request`
+			errorMsg:`cart not found for user`
 			});
 		}
 	else{
 		
-			const cart = Cart.findOne({ _id: id }).exec()
+			const cart = Cart.findOne({ userId: userId }).exec()
 			.then(async (cartObj) =>{
 				//console.log(`here is the current cart - ${JSON.stringify(cartObj)}`)
-				let product = await Cart.findOne({_id:id, "items.productId": productId}).exec();
+				let product = await Cart.findOne({userId: userId, "items.productId": productId}).exec();
 				//console.log(`product - ${JSON.stringify(product)}`)
 				if(!product)
 					{
@@ -164,14 +203,14 @@ controller.removeProductFromCart = (req, res) => {
 					}
 				
 				Cart.updateOne(
-					{_id:id}, 
+					{userId: userId}, 
 					{ $pull :{
 							items: {
 								productId:productId
 							}
 					}}
 					)
-				.then(() =>{
+				.then((cartObj) =>{
 				res.status(200).json({
 					ok:true,
 					cartId: cartObj._id
@@ -190,15 +229,16 @@ controller.removeProductFromCart = (req, res) => {
 
 
 controller.getCart = (req, res) => {
-	const { cartId } = req.params;
-	console.log(`cartId is ${cartId}`);
-  	if(!cartId){
+	const userId = req.user.id;
+	//const { cartId } = req.params;
+	// console.log(`cartId is ${cartId}`);
+  	if(!userId){
   		res.status(500).json({
   		ok:false,
-  		errorMsg:'no cartId parameter in request'
+  		errorMsg:'no user found'
   		});
   	}
-  	Cart.findById(cartId).exec()
+  	Cart.findOne({userId: userId}).exec()
   	.then((cart) =>{
   		//console.log(`cart is ${JSON.stringify(cart)}`)
   		return Promise.all(cart.items.map(async item =>

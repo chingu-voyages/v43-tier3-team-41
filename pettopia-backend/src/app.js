@@ -13,12 +13,13 @@ app.use('/api/v1/products', require('./routes/product.routes'))
 app.use('/api/v1/cart', require('./routes/cart.routes'))
 app.use('/api/v1/favorites', require('./routes/favorites.routes'))
 app.use('/api/v1/test', require('./routes/test.routes'))
+app.use('/api/v1/user', require('./routes/user.routes'))
+app.use('/api/v1/auth', require('./routes/auth.routes'))
 // unused routes
 app.use('/api/v1/orders', require('./routes/order.routes'))
 app.use('/api/v1/clients', require('./routes/client.routes'))
 app.use('/api/v1/users', require('./routes/user.routes'))
 app.use('/api/v1/roles', require('./routes/role.routes'))
-app.use('/api/v1/auth', require('./routes/auth.routes'))
 
 
 
