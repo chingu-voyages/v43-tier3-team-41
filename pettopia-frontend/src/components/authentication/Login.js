@@ -11,6 +11,7 @@ let fieldsState = {};
 fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
+    const backendUrl = 'https://pettopia-backend.onrender.com'
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
     const { authToken, setAuthToken } = useContext(AppContext);
@@ -32,7 +33,7 @@ export default function Login(){
                 password:loginState['password']
         };
            
-        const endpoint=`http://localhost:5000/api/v1/auth/login`;
+        const endpoint=`${backendUrl}/api/v1/auth/login`;
          fetch(endpoint,
              {
              method:'POST',
