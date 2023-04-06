@@ -3,23 +3,24 @@ import { useNavigate } from 'react-router-dom';
 import AppContext from '../../AppContext';
 import DeleteIcon from '../../components/deleteIcon';
 export default function CartPage (){
-	const { cartId, authToken } = useContext(AppContext);
+	const { authToken } = useContext(AppContext);
 	const navigate = useNavigate();
 	const [cartItems, setCartItems] = useState([]);
 	const [fetchingData, setFetchingData] = useState(false);
+	const backendUrl = 'https://pettopia-backend.onrender.com'
 	useEffect(() =>console.log(authToken))
 	const getCart = () =>{
-		fetch(`http://localhost:5000/api/v1/cart`, {
+		fetch(`${backendUrl}/api/v1/cart`, {
 			method:'GET',
 			headers: {
-				'CONTENT-TYPE':'applicaiton/json',
+				'CONTENT-TYPE':'application/json',
 				'Authorization':authToken
 			}
 		})
 		.then(res =>res.json())
 		.then(data=>{
 //			console.log(`${JSON.stringify(data)}`);
-			setCartItems(data.cartItems);
+			if(data.cartItems) setCartItems(data.cartItems);
 			
 		})
 		.catch(err =>{
@@ -34,14 +35,24 @@ export default function CartPage (){
 		}
 		else getCart();
 	}, [])
-	
+	const checkoutCart = () =>{
+		fetch(`${backendUrl}/api/v1/orders`,{
+			method: 'POST',
+			headers:{
+							'Content-Type': 'application/json', 
+			        'Authorization':authToken
+						}
+				})
+		.then(res => res.json())
+		.then(() =>navigate('/orders'))
+	}
 	const increaseItemQty = (productId) =>{
 		if(authToken==null){
 			navigate('/login')
 		}
 		else{
 			setFetchingData(true);
-			fetch(`http://localhost:5000/api/v1/cart/add/${productId}`, {
+			fetch(`${backendUrl}/api/v1/cart/add/${productId}`, {
 				 method: 'POST',
 	        headers: { 
 	        	'Content-Type': 'application/json',
@@ -66,7 +77,7 @@ export default function CartPage (){
 			setFetchingData(true);
 		if(cartItems.find(cartItem => cartItem.product.productId == productId && cartItem.quantity == 1)){
 			//console.log(`item count is 1, so removing item from cart`);
-			fetch(`http://localhost:5000/api/v1/cart/remove/${productId}`, {
+			fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
 						 method: 'POST',
 			        headers: { 
 			        	'Content-Type': 'application/json', 
@@ -81,7 +92,7 @@ export default function CartPage (){
 						.catch(err => console.error(err));
 					}
 		else{
-			fetch(`http://localhost:5000/api/v1/cart/subtract/${productId}`, {
+			fetch(`${backendUrl}/api/v1/cart/subtract/${productId}`, {
 			 method: 'POST',
         headers: { 
         	'Content-Type': 'application/json',
@@ -114,7 +125,7 @@ export default function CartPage (){
 					<span>:</span>
 					<div>$</div>
 					<div className="text-lg">{calculateSum().toFixed(2)}</div>
-					<div className="btn btn-outline">
+					<div className="btn btn-outline" onClick={checkoutCart}>
 						Checkout
 					</div>
 				</div>

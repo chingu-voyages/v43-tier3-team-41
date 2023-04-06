@@ -1,7 +1,7 @@
 const Cart = require("../models/Cart");
 const Product = require("../models/Product");
-const CART_ITEM_STATUS = require('../constants');
-
+const constants = require('../constants');
+const CART_ITEM_STATUS = constants.CART_ITEM_STATUS;
 const controller = {};
 controller.createCart = (req, res) =>{
 	res.send('creating new cart');
@@ -124,7 +124,6 @@ controller.addToCart = async (req, res) => {
 
 controller.emptyCart = async (req, res) =>{
 	const userId = req.user.id;
-	const productId = req.params.productId;
 	const cart = await Cart.findOneAndUpdate({userId:userId}, 
 	{
 		$set:{"items":[]}

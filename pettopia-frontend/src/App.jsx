@@ -8,7 +8,8 @@ import { SearchProvider } from './Context/SearchContext/SearchContext';
 import CartPage from './pages/CartPage';
 import AppContext from './AppContext';
 import LoginPage from './pages/LoginPage'
-import SignUpPage from './pages/SignUpPage'
+import SignUpPage from './pages/SignUpPage';
+import OrdersPage from './pages/OrdersPage';
 
 function App() {
   //const cartId = '6424c6249193db4836879fe6';  
@@ -34,6 +35,7 @@ function App() {
           <Route path='/cart' element={<CartPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignUpPage />} />
+          <Route path='/orders' element={<OrdersPage />} />
           <Route path='/product_for_now' element={<ProductDetail />} />
         </Routes>
         </div>

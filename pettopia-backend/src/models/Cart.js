@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const ProductModel = require('./Product');
-const CART_ITEM_STATUS = require('../constants');
+const constants = require('../constants');
+const CART_ITEM_STATUS = constants.CART_ITEM_STATUS;
 const CartItemSchema = new mongoose.Schema({
     productId:{
         type:String,
