@@ -7,7 +7,22 @@ export const SearchProvider = ({children}) => {
     const [productData, setProductData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(9);
-    const [filterTerms, setFilteredTerms] = useState([])
+    const [filterTerms, setFilteredTerms] = useState([]);
+    const [filters, setFilters] = useState([
+      {
+        id: 'Dog Treats', text: 'Dog Treats', completed: false 
+      },
+      {
+        id: 'Soft and Chewy Dog Treats', text: 'Soft/Chewy Dog Treats', completed: false 
+      },
+      {
+        id: 'Dog Treats', text: 'Dog Treats', completed: false 
+      },
+      {
+        id: 'Dog Treats', text: 'Dog Treats', completed: false 
+      },
+
+    ])
 
     const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element)))
   
@@ -41,6 +56,10 @@ export const SearchProvider = ({children}) => {
         navigate('/search');
     };
 
+    const handleFormSubmit = (e) => {
+      e.preventDefault();
+    }
+
     return(
         <SearchContext.Provider value={{
             handleSubmit,
@@ -52,7 +71,12 @@ export const SearchProvider = ({children}) => {
             postsPerPage,
             setCurrentPage,
             currentPage,
-            filteredPosts
+            filteredPosts,
+            handleFormSubmit,
+            filters,
+            setFilters,
+            filterTerms,
+            setFilteredTerms
         }}>
             {children}
         </SearchContext.Provider>
