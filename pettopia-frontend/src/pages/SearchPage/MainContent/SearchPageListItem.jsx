@@ -14,7 +14,7 @@ const SearchPageListItem = ({ item }) => {
         <figure>
           <img className='' src={item.mainImageUrl} alt={item.name} />
         </figure>
-        <div className='card-body'>
+        <div className='card-body min-h-[190px]'>
           <h2 className='card-title'>
             {`${brand}`}
             <div className='badge badge-secondary'>{`$${item.price}`}</div>
@@ -29,8 +29,12 @@ const SearchPageListItem = ({ item }) => {
           </p>
           <p>{item.description}</p>
           <div className='card-actions justify-end'>
-            <div className='badge badge-outline'>Fashion</div>
-            <div className='badge badge-outline'>Products</div>
+            {item.categories.map(category => {
+                return(
+                  <div className='badge badge-outline'>{category}</div>
+                )
+              })
+            }
           </div>
         </div>
       </div>

@@ -1,12 +1,12 @@
-const Pagination = ({
-  totalPosts,
-  postsPerPage,
-  setCurrentPage,
-  currentPage,
-}) => {
+import { useContext } from "react";
+import SearchContext from "../../../Context/SearchContext/SearchContext";
+
+const Pagination = () => {
+  const {productData, postsPerPage, setCurrentPage, currentPage} = useContext(SearchContext);
+
   let pages = [];
 
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(productData.length / postsPerPage); i++) {
     pages.push(i);
   }
 
