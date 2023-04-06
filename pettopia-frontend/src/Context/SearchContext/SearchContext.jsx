@@ -7,10 +7,13 @@ export const SearchProvider = ({children}) => {
     const [productData, setProductData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(9);
+    const [filterTerms, setFilteredTerms] = useState([])
+
+    const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element)))
   
     const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
-    const currentPosts = productData.slice(firstPostIndex, lastPostIndex);
+    const currentPosts = filteredPosts.slice(firstPostIndex, lastPostIndex);
     const API_URL = 'https://pettopia-backend.onrender.com/api/v1/products';
 
     useEffect(() => {
@@ -48,7 +51,8 @@ export const SearchProvider = ({children}) => {
             currentPosts,
             postsPerPage,
             setCurrentPage,
-            currentPage
+            currentPage,
+            filteredPosts
         }}>
             {children}
         </SearchContext.Provider>

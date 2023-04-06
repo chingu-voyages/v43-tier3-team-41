@@ -9,8 +9,8 @@ const SearchPageListItem = ({ item }) => {
   const description = splitName.filter((item) => item !== brand).join(' ');
 
   return (
-    <li key={item.id}>
-      <div className='card w-84 bg-base-100 shadow-xl h-84'>
+    <li className="" key={item.id}>
+      <div className='card w-[100%] bg-base-100 shadow-xl h-84'>
         <figure>
           <img className='' src={item.mainImageUrl} alt={item.name} />
         </figure>
@@ -29,9 +29,9 @@ const SearchPageListItem = ({ item }) => {
           </p>
           <p>{item.description}</p>
           <div className='card-actions justify-end'>
-            {item.categories.map(category => {
+            {item.categories.map((category, index) => {
                 return(
-                  <div className='badge badge-outline'>{category}</div>
+                  <div className='badge badge-outline'>{category.length > 10 ? category.slice(0,15) + '...' : category}</div>
                 )
               })
             }
