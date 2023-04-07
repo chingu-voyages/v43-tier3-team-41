@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import SearchContext from "../../../Context/SearchContext/SearchContext";
+
 const SearchPageListItem = ({ item }) => {
   const splitName = item.name.split(' ');
   const defaultBrand =
@@ -8,9 +11,10 @@ const SearchPageListItem = ({ item }) => {
       : splitName[0];
   const description = splitName.filter((item) => item !== defaultBrand).join(' ');
   
+  const {handleAddToCart} = useContext(SearchContext);
 
   return (
-    <li key={item.id}>
+    <li key={item.productId}>
       <div className='card w-[100%] bg-base-100 shadow-xl h-84'>
         <figure>
           <img src={item.mainImageUrl} alt={item.name} />
@@ -31,7 +35,7 @@ const SearchPageListItem = ({ item }) => {
           <p>{item.description}</p>
           <div className='card-actions justify-end'>
             <div className='badge badge-outline'>{item.categories[item.categories.length - 1] ?? 'Dogs'}</div>
-            
+            <button onClick={() => handleAddToCart(item)}> Add To Cart </button>
             {/* Show all Categories as badges */}
             {/* {item.categories.map((category, index) => {
                 return(
