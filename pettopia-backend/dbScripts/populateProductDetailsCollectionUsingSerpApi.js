@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const Product = require('../src/models/Product');
 const ProductDetail = require('../src/models/ProductDetail');
 require('dotenv').config();
-console.log(`${process.env.MONGODB_CONNECTION_STRING_2}`)
-mongoose.connect(process.env.MONGODB_CONNECTION_STRING_2, {  
+console.log(`${process.env.MONGODB_CONNECTION_STRING}`)
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {  
   useNewUrlParser: true,  
   useUnifiedTopology: true,  
   useFindAndModify: false
@@ -14,7 +14,6 @@ const search = new SerpApi.GoogleSearch("b869d5c6500fd281ffc5ed4b8366a724277e3da
 
 
 // set up the request parameters
-
 
 const productDetailsExec = async () =>
 await Product.find().exec()
@@ -26,7 +25,8 @@ await Product.find().exec()
         console.log(`product ${product.productId} does not exist in details collection`)
     try{
           console.log('fetching data...');
-          search.json({
+          try{
+           search.json({
             engine: "walmart_product",
             product_id: product.productId
           }, product =>{
@@ -45,12 +45,18 @@ await Product.find().exec()
               numReviews: productFields.reviews
                 });
             productDetail.save()
-            // .then(()=>{
+ 
+          })
+         }
+          catch(err){
+            console.error(err);
+          }
+                      // .then(()=>{
             //   if(i == products.length - 1){
             //       process.exit();
             //     }
             // })
-          })
+          
     }
     catch(err){
           console.log(err);
