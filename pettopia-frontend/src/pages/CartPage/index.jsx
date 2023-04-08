@@ -2,52 +2,39 @@ import React, { useState, useContext, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../../AppContext';
 import DeleteIcon from '../../components/deleteIcon';
+import SearchContext from '../../Context/SearchContext/SearchContext';
 export default function CartPage (){
-	const { authToken } = useContext(AppContext);
+	// const { authToken } = useContext(AppContext);
+	const { cartItems, setCartItems } = useContext(SearchContext);
+	const { getCart, backendUrl } = useContext(AppContext);
 	const navigate = useNavigate();
-	const [cartItems, setCartItems] = useState([]);
+	// const [cartItems, setCartItems] = useState([]);
 	const [fetchingData, setFetchingData] = useState(false);
-	const backendUrl = 'https://pettopia-backend.onrender.com'
-	useEffect(() =>console.log(authToken))
-	const getCart = () =>{
-		fetch(`${backendUrl}/api/v1/cart`, {
-			method:'GET',
-			headers: {
-				'CONTENT-TYPE':'application/json',
-				'Authorization':authToken
-			}
-		})
-		.then(res =>res.json())
-		.then(data=>{
-//			console.log(`${JSON.stringify(data)}`);
-			if(data.cartItems) setCartItems(data.cartItems);
-			
-		})
-		.catch(err =>{
-			console.error(err);
-		})
-	}
+	// useEffect(() =>console.log(authToken))
+
+
+
 	useEffect(() =>{
-		console.log(`${authToken ?? 'authToken is null'}`)
-		if(authToken==null) {
-			console.log(`authToken: ${authToken}`);
+
+		if(localStorage.getItem('token') === null) {
+			// console.log(`authToken: ${authToken}`);
 			navigate('/login')
 		}
-		else getCart();
+		else getCart(cartItems, setCartItems);
 	}, [])
 	const checkoutCart = () =>{
 		fetch(`${backendUrl}/api/v1/orders`,{
 			method: 'POST',
 			headers:{
 							'Content-Type': 'application/json', 
-			        'Authorization':authToken
+							'Authorization': localStorage.getItem('token')
 						}
 				})
 		.then(res => res.json())
 		.then(() =>navigate('/orders'))
 	}
 	const increaseItemQty = (productId) =>{
-		if(authToken==null){
+		if(localStorage.getItem('token') === null){
 			navigate('/login')
 		}
 		else{
@@ -56,7 +43,7 @@ export default function CartPage (){
 				 method: 'POST',
 	        headers: { 
 	        	'Content-Type': 'application/json',
-	        	'Authorization':authToken },
+	        	'Authorization': localStorage.getItem('token') },
 	        body: JSON.stringify({})
 			})
 			.then(response => response.json())
@@ -70,7 +57,7 @@ export default function CartPage (){
 		}
 	}
 	const decreaseItemQty = (productId) =>{
-		if(authToken==null){
+		if(localStorage.getItem('token') === null){
 			navigate('/login')	
 		}
 		else{
@@ -81,7 +68,7 @@ export default function CartPage (){
 						 method: 'POST',
 			        headers: { 
 			        	'Content-Type': 'application/json', 
-			        	'Authorization':authToken },
+			        	'Authorization': localStorage.getItem('token') },
 			        body: JSON.stringify({})
 						})
 						.then(response => response.json())
@@ -96,7 +83,7 @@ export default function CartPage (){
 			 method: 'POST',
         headers: { 
         	'Content-Type': 'application/json',
-        	'Authorization':authToken  },
+        	'Authorization': localStorage.getItem('token')  },
         body: JSON.stringify({})
 			})
 			.then(response => response.json())

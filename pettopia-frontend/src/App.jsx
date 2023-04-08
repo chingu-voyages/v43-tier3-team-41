@@ -15,15 +15,37 @@ function App() {
   //const cartId = '6424c6249193db4836879fe6';  
   //const cartId = null; 
   //const token = window.localStorage.getItem('token');
+  const backendUrl = 'https://pettopia-backend.onrender.com'
+
   const [authToken, setAuthToken] = useState(null);
   useEffect(() =>{
     console.log('welcome to app');
   })
+
+  const getCart = async (cartItems, setCartItems) =>{
+      try {
+        const response = await fetch(`${backendUrl}/api/v1/cart`, {
+          method:'GET',
+          headers: {
+            'CONTENT-TYPE':'application/json',
+            'Authorization': localStorage.getItem('token')
+          }
+        })
+        const data = await response.json()
+        if(data.cartItems) {setCartItems(data.cartItems);} 
+      } catch (error) {
+        console.log(error)
+      }
+	}
+
   return (
+
     <AppContext.Provider value={{ 
       //cartId,
-      authToken,
-      setAuthToken
+      // authToken,
+      // setAuthToken
+      getCart,
+      backendUrl
     }}>
         <BrowserRouter>
         <SearchProvider>
