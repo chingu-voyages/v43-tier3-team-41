@@ -10,7 +10,13 @@ export const SearchProvider = ({children}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(9);
     const [filterTerms, setFilteredTerms] = useState([]);
-    const { authToken } = useContext(AppContext);
+    const { authToken, getCart} = useContext(AppContext);
+    const [cartItems, setCartItems] = useState([]);
+    const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element)))
+    const lastPostIndex = currentPage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = filteredPosts.slice(firstPostIndex, lastPostIndex);
+    const API_URL = 'https://pettopia-backend.onrender.com/api/v1';
     const [filters, setFilters] = useState([
       {
         id: 'Dog Treats', text: 'Dog Treats', completed: false 
@@ -27,13 +33,6 @@ export const SearchProvider = ({children}) => {
 
     ])
 
-    const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element)))
-  
-    const lastPostIndex = currentPage * postsPerPage;
-    const firstPostIndex = lastPostIndex - postsPerPage;
-    const currentPosts = filteredPosts.slice(firstPostIndex, lastPostIndex);
-    const API_URL = 'https://pettopia-backend.onrender.com/api/v1';
-
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -46,17 +45,27 @@ export const SearchProvider = ({children}) => {
         };
     
         fetchData();
+        if(localStorage.getItem('token') !== null){
+          getCart(cartItems, setCartItems);
+        }
       }, []);
 
       const handleAddToCart = async (item) => {
-        await fetch(`${API_URL}/cart/add/${item.productId}`, {
-          method: 'POST',
-           headers: { 
-             'Content-Type': 'application/json',
-             'Authorization': authToken
-            },
-           body: JSON.stringify({})
-       })
+        
+        if(localStorage.getItem('token') === null){
+          navigate('/login')	
+        } else {
+          await fetch(`${API_URL}/cart/add/${item.productId}`, {
+            method: 'POST',
+             headers: { 
+               'Content-Type': 'application/json',
+               'Authorization': localStorage.getItem('token')
+              },
+             body: JSON.stringify({})
+         })
+  
+         getCart(cartItems, setCartItems);
+        }
       }
     
     const [searchTerm, setSearchTerm] = useState('');
@@ -91,7 +100,9 @@ export const SearchProvider = ({children}) => {
             setFilters,
             filterTerms,
             setFilteredTerms,
-            handleAddToCart
+            handleAddToCart,
+            cartItems,
+            setCartItems
         }}>
             {children}
         </SearchContext.Provider>

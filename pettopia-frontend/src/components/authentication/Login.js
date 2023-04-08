@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { loginFields } from "./constants/formFields";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, state } from 'react-router-dom';
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
@@ -14,7 +14,8 @@ export default function Login(){
     const backendUrl = 'https://pettopia-backend.onrender.com'
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
-    const { authToken, setAuthToken } = useContext(AppContext);
+
+    // const { authToken, setAuthToken } = useContext(AppContext);
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
     }
@@ -27,6 +28,7 @@ export default function Login(){
     //Handle Login API Integration here
     const authenticateUser = () =>{
         
+
      
         let loginFields={
                 email:loginState['email-address'],
@@ -45,8 +47,9 @@ export default function Login(){
             .then(response=>response.json())
             .then(data=>{
                 //API Success from LoginRadius Login API
-                setAuthToken(data.token);
-                navigate('/cart');
+                // setAuthToken(data.token);
+                localStorage.setItem('token', data.token)
+                navigate(-1);
              })
             
             .catch(error=>console.log(error))
