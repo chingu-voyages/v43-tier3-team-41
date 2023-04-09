@@ -22,19 +22,7 @@ function populateDB(){
   			product_id: product.productId
 				},
 				function (productDetail) {console.log(`${JSON.stringify(productDetail)}`) })
-		// 		function (productDetail){
-				// 	console.log(`${JSON.stringify(productDetail.product_result)}`)
-				// 	const newProductDetail = new ProductDetailModel({
-	    	// 	description: productDetail.product_result.short_description_html,
-	    	// 	images:  productDetail.product_result.images, 
-				// 	categories: productDetail.product_result.categories.map(category => category.name),
-				// 	numReviews: productDetail.product_result.reviews,
-    		// })
-				// console.log(`${JSON.stringify(newProductDetail)}`)
-    		// newProductDetail.save().then(doc=>{
-    		// 	console.log(`\n\n${JSON.stringify(doc)}\n\n`);
-    		// })
-		// })
+		
 	})
 	}).then(()=>process.exit())
 }
