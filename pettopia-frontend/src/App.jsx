@@ -22,7 +22,7 @@ function App() {
     console.log('welcome to app');
   })
 
-  const getCart = async (cartItems, setCartItems) =>{
+  const getCart = async (setCartItems) =>{
       try {
         const response = await fetch(`${backendUrl}/api/v1/cart`, {
           method:'GET',
