@@ -23,14 +23,7 @@ export const SearchProvider = ({children}) => {
       },
       {
         id: 'Soft and Chewy Dog Treats', text: 'Soft/Chewy Dog Treats', completed: false 
-      },
-      {
-        id: 'Dog Treats', text: 'Dog Treats', completed: false 
-      },
-      {
-        id: 'Dog Treats', text: 'Dog Treats', completed: false 
-      },
-
+      }
     ])
 
     useEffect(() => {
