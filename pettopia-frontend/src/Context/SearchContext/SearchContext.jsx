@@ -16,6 +16,7 @@ export const SearchProvider = ({children}) => {
     const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = filteredPosts.slice(firstPostIndex, lastPostIndex);
+    const [fetchingData, setFetchingData] = useState(false);
     const API_URL = 'https://pettopia-backend.onrender.com/api/v1';
     const [filters, setFilters] = useState([
       {
@@ -29,9 +30,11 @@ export const SearchProvider = ({children}) => {
     useEffect(() => {
         const fetchData = async () => {
           try {
+            setFetchingData(true);
             const response = await fetch(API_URL + '/products');
             const data = await response.json();
             setProductData(data.products);
+            setFetchingData(false);
           } catch (error) {
             console.log(error);
           }
@@ -95,7 +98,8 @@ export const SearchProvider = ({children}) => {
             setFilteredTerms,
             handleAddToCart,
             cartItems,
-            setCartItems
+            setCartItems,
+            fetchingData
         }}>
             {children}
         </SearchContext.Provider>
