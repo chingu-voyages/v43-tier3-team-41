@@ -39,7 +39,7 @@ export const SearchProvider = ({children}) => {
     
         fetchData();
         if(localStorage.getItem('token') !== null){
-          getCart(cartItems, setCartItems);
+          getCart(setCartItems);
         }
       }, []);
 
@@ -57,7 +57,7 @@ export const SearchProvider = ({children}) => {
              body: JSON.stringify({})
          })
   
-         getCart(cartItems, setCartItems);
+         getCart(setCartItems);
         }
       }
     
