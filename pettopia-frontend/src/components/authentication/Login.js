@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { loginFields } from "./constants/formFields";
-import { useNavigate, state } from 'react-router-dom';
+import { useNavigate, state , useLocation} from 'react-router-dom';
 import FormAction from "./FormAction";
 import FormExtra from "./FormExtra";
 import Input from "./Input";
@@ -14,7 +14,8 @@ export default function Login(){
     const backendUrl = 'https://pettopia-backend.onrender.com'
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
-
+    const location = useLocation();
+    const redirectUrl = location.state.url
     // const { authToken, setAuthToken } = useContext(AppContext);
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})
@@ -49,7 +50,7 @@ export default function Login(){
                 //API Success from LoginRadius Login API
                 // setAuthToken(data.token);
                 localStorage.setItem('token', data.token)
-                navigate(-1);
+                navigate(redirectUrl);
              })
             
             .catch(error=>console.log(error))

@@ -13,7 +13,8 @@ const ProductDetailSchema = new Schema({
   },
   productId:{
   	type:String, 
-  	required:true
+  	required:true,
+    unique:true
   },
   images:{
   	type:[String],

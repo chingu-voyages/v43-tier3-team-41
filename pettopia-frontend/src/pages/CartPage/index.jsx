@@ -18,9 +18,9 @@ export default function CartPage (){
 
 		if(localStorage.getItem('token') === null) {
 			// console.log(`authToken: ${authToken}`);
-			navigate('/login')
+			navigate('/login', {state : {url:'/cart'}})
 		}
-		else getCart(cartItems, setCartItems);
+		else getCart(setCartItems);
 	}, [])
 	const checkoutCart = () =>{
 		fetch(`${backendUrl}/api/v1/orders`,{
@@ -48,7 +48,7 @@ export default function CartPage (){
 			})
 			.then(response => response.json())
 			.then(data =>{
-					getCart()
+					getCart(setCartItems)
 			})
 			.then(() =>{
 				setFetchingData(false);
@@ -88,7 +88,7 @@ export default function CartPage (){
 			})
 			.then(response => response.json())
 			.then(data =>{
-				getCart()
+				getCart(setCartItems)
 			})
 			.then(()=>setFetchingData(false))
 			.catch(err => console.error(err));
@@ -112,7 +112,7 @@ export default function CartPage (){
 					<span>:</span>
 					<div>$</div>
 					<div className="text-lg">{calculateSum().toFixed(2)}</div>
-					<div className="btn btn-outline" onClick={checkoutCart}>
+					<div className={`btn btn-outline ${cartItems.length <= 0 ? 'disabled:opacity-25' : ''}`} onClick={checkoutCart}>
 						Checkout
 					</div>
 				</div>
@@ -138,7 +138,7 @@ export default function CartPage (){
 				<tbody>
 					{cartItems.map(cartItem =>{
 					return (
-						<tr key={cartItem.product.productId} className={`${fetchingData? 'bg-slate-500':''}`}>
+						<tr key={cartItem.product.productId} className={`${fetchingData? 'opacity-30':''}`}>
 							<td>
 								
 							</td>

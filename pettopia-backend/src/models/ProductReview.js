@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const ProductReviewSchema = new Schema({
   productId:{
   	type:String,
-  	required:true
+  	required:true,
+    unique:true
   },
   text:{
   	type:String,
