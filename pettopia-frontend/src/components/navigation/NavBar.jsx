@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SearchContext from '../../Context/SearchContext/SearchContext';
 import AppContext from '../../AppContext';
+import NavBarShopCartItem from './NavBarShopCartItem';
 
 const THEMES = [
   'light',
@@ -49,19 +50,20 @@ export default function NavBar() {
     setTheme(themeVal);
   };
 
-  const { handleSubmit, searchTerm, setSearchTerm, cartItems } = useContext(SearchContext);
+  const { handleSubmit, searchTerm, setSearchTerm, cartItems } =
+    useContext(SearchContext);
 
-  const calculateSum = () =>{
-		if(cartItems.length > 0){
-			const sum = cartItems.reduce(((totalPrice, obj) => (totalPrice + obj.product.price*obj.quantity)), 0.00)
-		  
-      console.log(`sum is ${sum}`);
-			return Math.round(sum * 100) / 100; 
-		}
-		return 0;
-	}
+  const calculateSum = () => {
+    if (cartItems.length > 0) {
+      const sum = cartItems.reduce(
+        (totalPrice, obj) => totalPrice + obj.product.price * obj.quantity,
+        0.0
+      );
+      return Math.round(sum * 100) / 100;
+    }
+    return 0;
+  };
   const subTotal = calculateSum();
-
 
   // const cartItems2 = [
   //   {
@@ -263,22 +265,25 @@ export default function NavBar() {
                     d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                   />
                 </svg>
-                <span className='badge badge-sm indicator-item'>{cartItems.length}</span>
+                <span className='badge badge-sm indicator-item'>
+                  {cartItems.length}
+                </span>
               </div>
             </label>
             <div
               tabIndex={0}
-              className='mt-3 card card-compact dropdown-content w-52 bg-base-100 shadow'
+              className='mt-3 card card-compact dropdown-content w-96 bg-base-100 shadow'
             >
-              <div className='card-body'>
-                {cartItems.map((item) => (
-                  <div>
-                    {item.product.name}
-                    <img alt={item.product.name} src={item.product.imageUrl} />
-                  </div>
-                ))}
-                <span className='font-bold text-lg'>
-                </span>
+              <div className='card-body w-96'>
+                <div className='overflow-y-auto max-h-72'>
+                  {cartItems.length > 0
+                    ? cartItems.map((item) => (
+                        <NavBarShopCartItem item={item} />
+                      ))
+                    : <p> Your cart is currently empty. </p>
+                  }
+                </div>
+                <span className='font-bold text-lg'></span>
                 <span className='text-info'>Subtotal: ${subTotal} </span>
                 <div className='card-actions'>
                   <button className='btn btn-primary btn-block'>
