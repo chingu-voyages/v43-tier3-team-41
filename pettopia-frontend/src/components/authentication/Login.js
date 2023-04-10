@@ -50,7 +50,7 @@ export default function Login(){
                 //API Success from LoginRadius Login API
                 // setAuthToken(data.token);
                 localStorage.setItem('token', data.token)
-                navigate(redirectUrl);
+                navigate(-1);
              })
             
             .catch(error=>console.log(error))
