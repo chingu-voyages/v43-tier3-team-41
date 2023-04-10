@@ -51,6 +51,17 @@ export default function NavBar() {
 
   const { handleSubmit, searchTerm, setSearchTerm, cartItems } = useContext(SearchContext);
 
+  const calculateSum = () =>{
+		if(cartItems.length > 0){
+			const sum = cartItems.reduce(((totalPrice, obj) => (totalPrice + obj.product.price*obj.quantity)), 0.00)
+		  
+      console.log(`sum is ${sum}`);
+			return Math.round(sum * 100) / 100; 
+		}
+		return 0;
+	}
+  const subTotal = calculateSum();
+
 
   // const cartItems2 = [
   //   {
@@ -252,7 +263,7 @@ export default function NavBar() {
                     d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                   />
                 </svg>
-                <span className='badge badge-sm indicator-item'>8</span>
+                <span className='badge badge-sm indicator-item'>{cartItems.length}</span>
               </div>
             </label>
             <div
@@ -268,7 +279,7 @@ export default function NavBar() {
                 ))}
                 <span className='font-bold text-lg'>
                 </span>
-                <span className='text-info'>Subtotal: $154.23 </span>
+                <span className='text-info'>Subtotal: ${subTotal} </span>
                 <div className='card-actions'>
                   <button className='btn btn-primary btn-block'>
                     <Link to='/cart'> View cart </Link>
