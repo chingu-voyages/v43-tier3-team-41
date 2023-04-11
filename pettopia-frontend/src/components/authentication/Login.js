@@ -14,8 +14,6 @@ export default function Login(){
     const backendUrl = 'https://pettopia-backend.onrender.com'
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
-    const location = useLocation();
-    const redirectUrl = location.state.url
     // const { authToken, setAuthToken } = useContext(AppContext);
     const handleChange=(e)=>{
         setLoginState({...loginState,[e.target.id]:e.target.value})

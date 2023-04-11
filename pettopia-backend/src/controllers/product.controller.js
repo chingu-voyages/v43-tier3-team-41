@@ -125,7 +125,7 @@ CTRL.getProduct = (req, res) => {
       })
       .then((product) =>{
       
-      	res.status(200).json({
+        res.status(200).json({
             ok:true,
             product
           })
