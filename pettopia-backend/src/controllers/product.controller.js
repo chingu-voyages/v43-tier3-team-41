@@ -4,7 +4,7 @@ const ProductDetailModel = require("../models/ProductDetail");
 const ProductReviewModel = require("../models/ProductReview");
 const Redis = require('redis')
 const client = require('../redisConfig');
-const DEFAULT_EXPIRATION = 60 * 60 * 24
+const DEFAULT_EXPIRATION = 3600
 const CTRL = {};
 
 
