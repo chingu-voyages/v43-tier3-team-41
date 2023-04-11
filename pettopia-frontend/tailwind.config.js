@@ -11,5 +11,8 @@ module.exports = {
       },
     },
   },
+  variants: {
+    backgroundColor: ({ after }) => after(['disabled'])
+  },
   plugins: [require('daisyui')],
 };

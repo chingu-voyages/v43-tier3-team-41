@@ -8,7 +8,6 @@ export default function CartPage (){
 	const { cartItems, setCartItems } = useContext(SearchContext);
 	const { getCart, backendUrl } = useContext(AppContext);
 	const navigate = useNavigate();
-	// const [cartItems, setCartItems] = useState([]);
 	const [fetchingData, setFetchingData] = useState(false);
 	// useEffect(() =>console.log(authToken))
 
@@ -73,7 +72,7 @@ export default function CartPage (){
 						})
 						.then(response => response.json())
 						.then(data =>{
-							getCart()
+							getCart(setCartItems)
 						})
 						.then(()=>setFetchingData(false))
 						.catch(err => console.error(err));
@@ -112,9 +111,9 @@ export default function CartPage (){
 					<span>:</span>
 					<div>$</div>
 					<div className="text-lg">{calculateSum().toFixed(2)}</div>
-					<div className={`btn btn-outline ${cartItems.length <= 0 ? 'disabled:opacity-25' : ''}`} onClick={checkoutCart}>
+					<button className={`btn btn-outline ${cartItems.length <= 0 ? 'disabled:opacity-100' : ''}`} disabled={cartItems.length <= 0} onClick={checkoutCart}>
 						Checkout
-					</div>
+					</button>
 				</div>
 			<table className="hover table-fixed table-compact w-full">
 				<thead className="">
