@@ -39,10 +39,44 @@ const SearchPageFilter = () => {
 
   };
   return (
-    <form onSubmit={handleFormSubmit}>
-        <div className="border border-red-500">
-          {filters.map((filter, index) => <span key={index} className="block">{filter.text} <input type="checkbox" checked={filter.completed} id={filter.id} onChange={handleFilterChange} /></span>)}
+    <form onSubmit={handleFormSubmit} className="select-none border-b-2 border-gray-300">
+        <div>
+          <h3 className="font-medium"> Pet Type: </h3>
+            {filters.map((filter, index) => filter.label === 'PetType' && <span key={index} className="flex p-4 justify-between">{filter.text} <label htmlFor={filter.id}><input type="checkbox" checked={filter.completed} id={filter.id} onChange={handleFilterChange} /></label></span>)}
+          
+          <h3 className="font-medium"> Product Type: </h3>
+
+          <div className="collapse collapse-arrow">
+            <input type="checkbox" />
+            <div className="collapse-title">
+              Food
+            </div>
+            <div className="collapse-content">
+            {filters.map((filter, index) => filter.label === 'Food' && <span key={index} className="flex p-4 justify-between">{filter.text} <label htmlFor={filter.id}><input type="checkbox" checked={filter.completed} id={filter.id} onChange={handleFilterChange} /></label></span>)}
+            </div>
+          </div>
+
+          <div className="collapse collapse-arrow">
+            <input type="checkbox" />
+            <div className="collapse-title">
+              Treats
+            </div>
+            <div className="collapse-content">
+            {filters.map((filter, index) => filter.label === 'Treats' && <span key={index} className="flex p-4 justify-between">{filter.text} <label htmlFor={filter.id}><input type="checkbox" checked={filter.completed} id={filter.id} onChange={handleFilterChange} /></label></span>)}
+            </div>
+          </div>
+
+          <div className="collapse collapse-arrow">
+            <input type="checkbox" />
+            <div className="collapse-title">
+              Toys
+            </div>
+            <div className="collapse-content">
+            {filters.map((filter, index) => filter.label === 'Toys' && <span key={index} className="flex p-4 justify-between">{filter.text} <label htmlFor={filter.id}><input type="checkbox" checked={filter.completed} id={filter.id} onChange={handleFilterChange} /></label></span>)}
+            </div>
+          </div>
         </div>
+
     </form>
   )
 }

@@ -12,18 +12,55 @@ export const SearchProvider = ({children}) => {
     const [filterTerms, setFilteredTerms] = useState([]);
     const { authToken, getCart} = useContext(AppContext);
     const [cartItems, setCartItems] = useState([]);
-    const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element)))
+    const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element) || item.brand.includes(element)))
     const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = filteredPosts.slice(firstPostIndex, lastPostIndex);
     const [fetchingData, setFetchingData] = useState(false);
     const API_URL = 'https://pettopia-backend.onrender.com/api/v1';
+    
     const [filters, setFilters] = useState([
       {
-        id: 'Dog Treats', text: 'Dog Treats', completed: false 
+        id: 'Dogs', text: 'Dog', completed: false, label: 'PetType',
+        petType: 'Dogs',
       },
       {
-        id: 'Soft and Chewy Dog Treats', text: 'Soft/Chewy Dog Treats', completed: false 
+        id: 'Dog Treats', text: 'All Treats', completed: false, label: 'Treats',
+        petType: 'Dogs',
+        productType: 'Treat',
+      },
+      {
+        id: 'Soft and Chewy Dog Treats', text: 'Soft/Chewy Treats', completed: false, label: 'Treats',
+        petType: 'Dogs',
+        productType: 'Treat'
+      },
+      {
+        id: 'Dog Bones and Chews', text: 'Dog Bones and Chews', completed: false, label: 'Treats',
+        petType: 'Dogs',
+        productType: 'Treat',
+      },
+      {
+        id: 'Dog Food', text: 'All Food', completed: false, label: 'Food',
+        petType: 'Dogs',
+        productType: 'Food',
+        foodType: 'All Food' 
+      },
+      {
+        id: 'Dry Dog Food', text: 'Dry Food', completed: false, label: 'Food',
+        petType: 'Dogs',
+        productType: 'Food',
+        foodType: 'Dry Dog Food' 
+      },
+      {
+        id: 'Wet Dog Food', text: 'Wet Food', completed: false, label: 'Food',
+        petType: 'Dogs',
+        productType: 'Food',
+        foodType: 'Wet Dog Food' 
+      },
+      {
+        id: 'Dog Toys', text: 'All Toys', completed: false, label: 'Toys',
+        petType: 'Dogs',
+        productType: 'Toys',
       }
     ])
 
@@ -99,7 +136,7 @@ export const SearchProvider = ({children}) => {
             handleAddToCart,
             cartItems,
             setCartItems,
-            fetchingData
+            fetchingData,
         }}>
             {children}
         </SearchContext.Provider>
