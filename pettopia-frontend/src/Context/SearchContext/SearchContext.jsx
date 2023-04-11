@@ -10,6 +10,8 @@ export const SearchProvider = ({children}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(9);
     const [filterTerms, setFilteredTerms] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
     const { authToken, getCart} = useContext(AppContext);
     const [cartItems, setCartItems] = useState([]);
     const filteredPosts = productData.filter(item => filterTerms.every(element => item.categories.includes(element) || item.brand.includes(element)))
@@ -64,20 +66,22 @@ export const SearchProvider = ({children}) => {
       }
     ])
 
+    const getAllProducts = async () => {
+      try {
+        setFetchingData(true);
+        const response = await fetch(API_URL + '/products');
+        const data = await response.json();
+        setProductData(data.products);
+        setFetchingData(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            setFetchingData(true);
-            const response = await fetch(API_URL + '/products');
-            const data = await response.json();
-            setProductData(data.products);
-            setFetchingData(false);
-          } catch (error) {
-            console.log(error);
-          }
-        };
-    
-        fetchData();
+        getAllProducts()
+
         if(localStorage.getItem('token') !== null){
           getCart(setCartItems);
         }
@@ -100,16 +104,20 @@ export const SearchProvider = ({children}) => {
          getCart(setCartItems);
         }
       }
-    
-    const [searchTerm, setSearchTerm] = useState('');
-    const [capturedSearchTerm, setCapturedSearchTerm] = useState('');
-    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSearchTermSubmit = async(e) => {
         e.preventDefault();
-        setCapturedSearchTerm(searchTerm);
+        try {
+          setFetchingData(true);
+          const response = await fetch(`${API_URL}/products?q=${searchTerm}`);
+          const data = await response.json()
+          setProductData(data.products);
+          setFetchingData(false);
+        } catch (error) {
+          console.log(error)
+        }
         setSearchTerm('');
-        navigate('/search');
+        navigate('/search')
     };
 
     const handleFormSubmit = (e) => {
@@ -118,10 +126,9 @@ export const SearchProvider = ({children}) => {
 
     return(
         <SearchContext.Provider value={{
-            handleSubmit,
+            handleSearchTermSubmit,
             searchTerm, 
             setSearchTerm,
-            capturedSearchTerm,
             productData,
             currentPosts,
             postsPerPage,
@@ -137,6 +144,7 @@ export const SearchProvider = ({children}) => {
             cartItems,
             setCartItems,
             fetchingData,
+            getAllProducts
         }}>
             {children}
         </SearchContext.Provider>
