@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signupFields } from "./constants/formFields"
 import FormAction from "./FormAction";
 import Input from "./Input";
@@ -10,7 +11,7 @@ fields.forEach(field => fieldsState[field.id]='');
 
 export default function Signup(){
   const [signupState,setSignupState]=useState(fieldsState);
-
+  const navigate = useNavigate()
   const handleChange=(e)=>setSignupState({...signupState,[e.target.id]:e.target.value});
 
   const handleSubmit=(e)=>{
@@ -32,7 +33,9 @@ export default function Signup(){
       body: JSON.stringify(signUpFields)
     })
     .then((res) => res.json())
-    .then(data => console.log(data.token));
+    .then(data => console.log(data.token))
+    .then(() => navigate(-1))
+    .catch(err => console.error(err))
   }
 
     return(
