@@ -1,114 +1,83 @@
 //const fs = require('fs');
 const ProductModel = require("../models/Product");
+
+
 const ProductDetailModel = require("../models/ProductDetail");
 const ProductReviewModel = require("../models/ProductReview");
-const Redis = require('redis')
-const client = require('../redisConfig');
-const DEFAULT_EXPIRATION = 3600
 const CTRL = {};
 
-
 CTRL.getProducts = (req, res) => {
-  
   const q = req.query.q;
+  let query;
   try{
-    console.log('retrieving from cache')
-    client.get(`products?q=${q}`, (err, products) =>{
-    console.log(`error is ${err}`)
-    if (err) console.error(err);
-    if(products) {
-      console.log(`retrieving products from cache`)
-        return res.json({
-          ok:true, 
-          products:JSON.parse(products)
-        })
-      }
-      else{
-        let query;
-        try{
-            if(q){
-          // console.log(`query parameter ${q}`)
-          query = ProductModel.find({"name": new RegExp(q, 'i')}).exec()
-          }
-          else {
-            query = ProductModel.find().exec();
-          }  
-        }
-        catch(err){
-          return res.status(500).json({
-                    ok: false,
-                    err
-                  })
-        }
-  
-        let retrievedProducts = [];
-        query.then(dbProducts =>{
-            return Promise.all(dbProducts.map(async (dbProduct) =>({
-              
-              productId: dbProduct.productId,
-              name : dbProduct.name,
-              price : dbProduct.price,
-              rating : dbProduct.rating,
-              mainImageUrl : dbProduct.imageUrl,
-              otherImages : await ProductDetailModel.findOne({"productId":dbProduct.productId})
-              .then(productDetail =>{
-                // console.log(`${JSON.stringify(productDetail.images)}`)
-                return productDetail.images
-              })
-              .catch(err =>{
-               // console.log(`no images found`);
-                return []
-              }),
-              brand: await ProductDetailModel.findOne({"productId":dbProduct.productId})
-              .then(productDetail =>{
-                // console.log(`${JSON.stringify(productDetail.images)}`)
-                return productDetail.brand ?? ''
-              })
-              .catch(err =>{
-               // console.log(`no images found`);
-                return ''
-              }),
-              categories : await ProductDetailModel.findOne({"productId":dbProduct.productId})
-              .then(productDetail =>{
-               // console.log(`${JSON.stringify(productDetail.categories)}`)
-                return productDetail.categories
-              })
-              .catch(err =>{
-               // console.log('no categories found')
-                return []
-              }),
-              reviews : await ProductReviewModel.find({"productId":dbProduct.productId})
-              .then(productReviews => productReviews.map(review =>({
-                    text:review.text,
-                    title:review.title,
-                    rating:review.rating
-                  })))
-              .catch(err =>[])
-              })
-            ))
-          })
-        .then(products =>{
-          console.log('setting products to cache')
-          client.setex(`products?q=${q}`, DEFAULT_EXPIRATION, JSON.stringify(products))
-          res.status(200).json({
-            ok:true,
-            products
-          })
-        })
-        .catch(err =>{
-          res.status(500)
-          .json({
-            ok:false, 
-            err:`retrieving products failed with error ${err}`
-          })
-        })
-            }
-        })
+      if(q){
+    // console.log(`query parameter ${q}`)
+    query = ProductModel.find({"name": new RegExp(q, 'i')}).exec()
+    }
+    else {
+      query = ProductModel.find().exec();
+    }  
   }
   catch(err){
-    res.send(err);
+    return res.status(500).json({
+              ok: false,
+              err
+            })
   }
-  console.log('outside redis cache check')
+  
+  let retrievedProducts = [];
+  query.then(dbProducts =>{
+      return Promise.all(dbProducts.map(async (dbProduct) =>({
+        
+        productId: dbProduct.productId,
+        name : dbProduct.name,
+        price : dbProduct.price,
+        rating : dbProduct.rating,
+        mainImageUrl : dbProduct.imageUrl,
+        otherImages : await ProductDetailModel.findOne({"productId":dbProduct.productId})
+        .then(productDetail =>{
+          // console.log(`${JSON.stringify(productDetail.images)}`)
+          return productDetail.images
+        })
+        .catch(err =>{
+         // console.log(`no images found`);
+          return []
+        }),
+        brand: await ProductDetailModel.findOne({"productId":dbProduct.productId})
+        .then(productDetail =>{
+          // console.log(`${JSON.stringify(productDetail.images)}`)
+          return productDetail.brand ?? ''
+        })
+        .catch(err =>{
+         // console.log(`no images found`);
+          return ''
+        }),
+        categories : await ProductDetailModel.findOne({"productId":dbProduct.productId})
+        .then(productDetail =>{
+         // console.log(`${JSON.stringify(productDetail.categories)}`)
+          return productDetail.categories
+        })
+        .catch(err =>{
+         // console.log('no categories found')
+          return []
+        }),
+        reviews : await ProductReviewModel.find({"productId":dbProduct.productId})
+        .then(productReviews => productReviews.map(review =>({
+              text:review.text,
+              title:review.title,
+              rating:review.rating
+            })))
+        .catch(err =>[])
+        })
+      ))
+    })
+  .then(products =>{
+    res.status(200).json({
+      ok:true,
+      products
+    })
+  })
+
 };
 
 CTRL.getProduct = (req, res) => {
@@ -156,7 +125,7 @@ CTRL.getProduct = (req, res) => {
       })
       .then((product) =>{
       
-      	res.status(200).json({
+        res.status(200).json({
             ok:true,
             product
           })
