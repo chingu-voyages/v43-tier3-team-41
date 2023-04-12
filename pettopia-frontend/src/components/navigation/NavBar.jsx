@@ -38,8 +38,9 @@ const THEMES = [
 ];
 
 export default function NavBar() {
-  // Themeing
   const [theme, setTheme] = useState('light');
+  const { handleSearchTermSubmit, searchTerm, setSearchTerm, cartItems, getAllProducts} =
+    useContext(SearchContext);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -49,9 +50,6 @@ export default function NavBar() {
     let themeVal = e.target.getAttribute('data-set-theme');
     setTheme(themeVal);
   };
-
-  const { handleSubmit, searchTerm, setSearchTerm, cartItems } =
-    useContext(SearchContext);
 
   const calculateSum = () => {
     if (cartItems.length > 0) {
@@ -64,59 +62,6 @@ export default function NavBar() {
     return 0;
   };
   const subTotal = calculateSum();
-
-  // const cartItems2 = [
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  // ];
-
-  // const meow = cartItems2.map((cartItem) => console.log(cartItem.product.name));
 
   return (
     <header className='w-100 bg-gray-600'>
@@ -204,7 +149,7 @@ export default function NavBar() {
         <div className='navbar-center hidden lg:flex'>
           <ul className='menu menu-horizontal px-1'>
             <li>
-              <Link to='/search' className='text-white'>
+              <Link to='/search' onClick={() => getAllProducts()}className='text-white'>
                 All Products
               </Link>
             </li>
@@ -212,7 +157,7 @@ export default function NavBar() {
         </div>
         <form
           onSubmit={(e) => {
-            handleSubmit(e);
+            handleSearchTermSubmit(e);
           }}
           className='form-control flex-none gap-2'
         >
