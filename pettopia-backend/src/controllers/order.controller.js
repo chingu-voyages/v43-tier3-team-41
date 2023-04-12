@@ -75,25 +75,21 @@ CTRL.createOrder = async (req, res) => {
   .then((cart) =>{
    // console.log(`cart is : ${JSON.stringify(cart)}`);
         const order = new Order({
-        cart: cart
+        cart: cart, 
+        status: ORDER_STATUS.InProgress
           })
       //  console.log(`new order is : ${JSON.stringify(order)}`);
     order.save()
-    .then(()=>{
-        Cart.deleteOne({userId:userId})
-        .then(() => 
-            res.status(200)
-          .json({ok:true}))
-      .catch(err => res.status(500).json({ok:false, err:`failed to delete existing cart with error : ${err}`}))
-    })
+    .then(order=>res.status(201)
+          .json({ok:true, orderId:order._id}))
     .catch(err => res.status(500).json({
-          ok:false, err:`error saving new order ${err}`}))
+          ok:false, err:`error creating new order ${err}`}))
   })
   .catch(err =>{
     res.status(500)
     .json({
       ok:false,
-      err:'error creating new order'
+      err:`error creating new order :${err}`
     })
   })
   

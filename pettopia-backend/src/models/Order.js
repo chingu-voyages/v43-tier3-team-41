@@ -19,8 +19,9 @@ const OrderSchema = new Schema({
     type:String,
     required:true,
     enum:[
+      ORDER_STATUS.IN_PROGRESS,
       ORDER_STATUS.Placed,
-      ORDER_STATUS.Cancelled 
+      ORDER_STATUS.Cancelled
       ],
     default:ORDER_STATUS.Placed
   }
