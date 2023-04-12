@@ -230,8 +230,8 @@ controller.removeProductFromCart = (req, res) => {
 controller.getCart = (req, res) => {
 	const userId = req.user.id;
 	//const { cartId } = req.params;
-	// console.log(`cartId is ${cartId}`);
-  	if(!userId){
+	// console.log(`userId is ${userId}`);
+  	if(userId == null){
   		res.status(500).json({
   		ok:false,
   		errorMsg:'no user found'
@@ -239,7 +239,7 @@ controller.getCart = (req, res) => {
   	}
   	Cart.findOne({userId: userId}).exec()
   	.then((cart) =>{
-  		//console.log(`cart is ${JSON.stringify(cart)}`)
+  		// console.log(`cart is ${JSON.stringify(cart)}`)
   		return Promise.all(cart.items.map(async item =>
   			({
   				product: await Product.findOne({'productId':item.productId}).exec(),
@@ -255,10 +255,10 @@ controller.getCart = (req, res) => {
 				cartItems
 			})
   	})
-  	.catch(() =>{
+  	.catch((err) =>{
   		res.status(500).json({
   		ok:false,
-  		err:'error retrieving items in cart'
+  		err:`error retrieving items in cart : ${err}`
   		})
   	})
 };

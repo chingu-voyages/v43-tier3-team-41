@@ -58,7 +58,7 @@ export default function Orders(){
 					 			)}
 					 		</div>
 					 		
-					 		<div className="font-bold text-center">{`Total : $ ${order.total}`}</div>
+					 		<div className="font-bold text-center">{`Total : $ ${order.total.toFixed(2)}`}</div>
 					 	</div>
 					 		
 					 )

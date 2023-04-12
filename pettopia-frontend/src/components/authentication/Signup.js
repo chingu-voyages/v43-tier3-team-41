@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signupFields } from "./constants/formFields"
 import FormAction from "./FormAction";
 import Input from "./Input";
+import AppContext from '../../AppContext';
 
 const fields=signupFields;
 let fieldsState={};
@@ -11,6 +12,7 @@ fields.forEach(field => fieldsState[field.id]='');
 
 export default function Signup(){
   const [signupState,setSignupState]=useState(fieldsState);
+  const { backendUrl } = useContext(AppContext);
   const navigate = useNavigate()
   const handleChange=(e)=>setSignupState({...signupState,[e.target.id]:e.target.value});
 
@@ -27,7 +29,7 @@ export default function Signup(){
       email:signupState['email-address'],
       password:signupState['password']
     }
-    fetch('https://pettopia-backend.onrender.com/api/v1/user', {
+    fetch(`${backendUrl}/api/v1/user`, {
       method:'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(signUpFields)

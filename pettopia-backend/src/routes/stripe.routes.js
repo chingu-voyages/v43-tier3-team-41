@@ -10,8 +10,10 @@ router.get('/', (req, res) =>{
 
 router.post('/checkout', isAuth, (req, res) =>{
 	const userId = req.user.id;
+	//console.log(`user id is ${userId}`)
 	Cart.findOne({userId: userId})
 	.then(async cart =>{
+		//console.log(`cart is ${JSON.stringify(cart)}`)
 		const line_items = await Promise.all(cart.items.map(async item =>{
 			const product = await Product.findOne({productId:item.productId})
 							.catch(err => { throw err })
@@ -22,7 +24,7 @@ router.post('/checkout', isAuth, (req, res) =>{
 					images:[product.imageUrl],
 					name:product.name
 				},
-				unit_amount: product.price * 100
+				unit_amount: Math.ceil(product.price * 100)
 			}, 
 			quantity: item.quantity * 2
 		}}
@@ -45,7 +47,7 @@ router.post('/checkout', isAuth, (req, res) =>{
 	})
 	.catch(err => {
 		console.log(`error : ${err}`)
-		res.send(err)
+		res.status(500).json(err)
 	})
 	//res.send(userId);
 })
