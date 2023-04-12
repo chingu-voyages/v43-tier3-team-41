@@ -5,12 +5,17 @@ import { useContext } from 'react';
 import SearchContext from '../../../Context/SearchContext/SearchContext';
 
 const SearchPageContent = () => {
-  const {fetchingData} = useContext(SearchContext);
+  const {fetchingData, productFetchingError} = useContext(SearchContext);
   return (
     <main className='flex flex-col mt-5 select-none'>
       <div className='grid grid-cols-12 gap-2'>
         <div className='col-span-3'> <SearchPageFilter /></div>
-        <div className='col-span-9'>{fetchingData ? <p className='text-center text-2xl'>Loading Products...</p> : <SearchPageContentList /> }</div>
+
+        <div className='col-span-9'>
+          {productFetchingError && <p className='text-center text-2xl'> Sorry, There was an error retrieving the products. Please Try Again. </p>}
+          {fetchingData && !productFetchingError && <p className='text-center text-2xl'>Loading Products...</p>}
+          {!fetchingData && <SearchPageContentList /> }
+        </div>
       </div>
       <Pagination />
     </main>

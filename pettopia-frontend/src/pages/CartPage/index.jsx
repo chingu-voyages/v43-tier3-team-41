@@ -6,7 +6,7 @@ import SearchContext from '../../Context/SearchContext/SearchContext';
 export default function CartPage() {
   // const { authToken } = useContext(AppContext);
   const { cartItems, setCartItems } = useContext(SearchContext);
-  const { getCart, backendUrl, fetchingCartData } = useContext(AppContext);
+  const { getCart, backendUrl, fetchingCartData, cartFetchingError } = useContext(AppContext);
   const navigate = useNavigate();
   // const [cartItems, setCartItems] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
@@ -113,8 +113,10 @@ export default function CartPage() {
   return (
     <div className='flex flex-col gap-3'>
       <div className='font-bold flex flex-row gap-5 justify-center items-center'>
-        {fetchingCartData && <p className='text-lg'>Loading Your Cart Data...</p>}
-        {!fetchingCartData && (
+        {cartFetchingError && <p className='text-lg'> Sorry! There was an error retrieving your items. Please try again.  </p>}
+        {fetchingCartData && !cartFetchingError && <p className='text-lg'>Loading Your Cart Data...</p>}
+        {!fetchingCartData && !cartFetchingError && cartItems.length === 0 && <p className='text-lg'>Your cart is currently empty - Total: $0.00</p>}
+        {!fetchingCartData && !cartFetchingError && cartItems.length > 0 && (
           	<>
 				<div className='text-lg'>Total</div>
 				<span>:</span>

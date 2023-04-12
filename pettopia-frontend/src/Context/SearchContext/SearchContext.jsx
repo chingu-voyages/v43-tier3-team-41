@@ -10,6 +10,7 @@ export const SearchProvider = ({children}) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage, setPostsPerPage] = useState(9);
     const [filterTerms, setFilteredTerms] = useState([]);
+    const [productFetchingError, setProductFetchingError] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const navigate = useNavigate();
     const { authToken, getCart} = useContext(AppContext);
@@ -73,8 +74,9 @@ export const SearchProvider = ({children}) => {
         const data = await response.json();
         setProductData(data.products);
         setFetchingData(false);
+        setProductFetchingError(false);
       } catch (error) {
-        console.log(error);
+        setProductFetchingError(true);
       }
     };
 
@@ -113,8 +115,10 @@ export const SearchProvider = ({children}) => {
           const data = await response.json()
           setProductData(data.products);
           setFetchingData(false);
+          setProductFetchingError(false);
         } catch (error) {
           console.log(error)
+          setProductFetchingError(true);
         }
         setSearchTerm('');
         navigate('/search')
@@ -144,7 +148,8 @@ export const SearchProvider = ({children}) => {
             cartItems,
             setCartItems,
             fetchingData,
-            getAllProducts
+            getAllProducts,
+            productFetchingError
         }}>
             {children}
         </SearchContext.Provider>
