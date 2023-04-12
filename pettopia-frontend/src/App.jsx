@@ -18,12 +18,14 @@ function App() {
   const backendUrl = 'https://pettopia-backend.onrender.com'
 
   const [authToken, setAuthToken] = useState(null);
+  const [fetchingCartData, setFetchingCartData] = useState(false);
   useEffect(() =>{
     console.log('welcome to app');
   })
 
   const getCart = async (setCartItems) =>{
       try {
+        setFetchingCartData(true);
         const response = await fetch(`${backendUrl}/api/v1/cart`, {
           method:'GET',
           headers: {
@@ -33,6 +35,7 @@ function App() {
         })
         const data = await response.json()
         if(data.cartItems) {setCartItems(data.cartItems);} 
+        setFetchingCartData(false)
       } catch (error) {
         console.log(error)
       }
@@ -45,7 +48,8 @@ function App() {
       // authToken,
       // setAuthToken
       getCart,
-      backendUrl
+      backendUrl,
+      fetchingCartData
     }}>
         <BrowserRouter>
         <SearchProvider>
