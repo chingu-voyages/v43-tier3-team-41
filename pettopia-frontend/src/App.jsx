@@ -59,7 +59,7 @@ function App() {
         <BrowserRouter>
         <SearchProvider>
         <NavBar />
-        <div className='container z-0'>
+        <div className='container'>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/search' element={<SearchPage />} />

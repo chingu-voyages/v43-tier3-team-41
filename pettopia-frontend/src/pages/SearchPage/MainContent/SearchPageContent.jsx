@@ -7,7 +7,7 @@ import SearchContext from '../../../Context/SearchContext/SearchContext';
 const SearchPageContent = () => {
   const {fetchingData, productFetchingError} = useContext(SearchContext);
   return (
-    <main className='flex flex-col mt-5 select-none'>
+    <main className='flex flex-col mt-5'>
       <div className='grid grid-cols-12 gap-2'>
         <div className='col-span-3'> <SearchPageFilter /></div>
 
