@@ -19,6 +19,7 @@ router.post('/checkout', isAuth, (req, res) =>{
 				price_data:{
 				currency:'usd',
 				product_data:{
+					images:[product.imageUrl],
 					name:product.name
 				},
 				unit_amount: product.price * 100
