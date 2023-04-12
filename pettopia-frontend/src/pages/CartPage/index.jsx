@@ -21,28 +21,33 @@ export default function CartPage() {
     }
   }, []);
   const checkoutCart = () => {
-    fetch(`${backendUrl}/api/v1/stripe/checkout`, {
+    fetch(`${backendUrl}/api/v1/orders`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: localStorage.getItem('token'),
-      }
+      },
     })
-    
-    // .then((res) =>fetch(`${backendUrl}/api/v1/orders`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: localStorage.getItem('token'),
-    //   },
-    // }))
+  .then( res => res.json())
+  .then(data => data.orderId)
+  .then(orderId =>fetch(`${backendUrl}/api/v1/stripe/checkout/${orderId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('token'),
+      },
+      body:JSON.stringify({
+          success_url:'orders',
+          cancel_url: 'cart'
+        })
+    }))
     .then(res => res.json())
     .then(data => {
       //console.log(data.url);
       window.location.assign(data.url)
     })
     .catch(err => console.error(err))
-  };
+  }
   const increaseItemQty = (productId) => {
     if (localStorage.getItem('token') === null) {
       navigate('/login');

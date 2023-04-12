@@ -6,6 +6,7 @@ const CART_ITEM_STATUS = {
   Not_processed: 'Not processed'
 };
 const ORDER_STATUS ={
+  InProgress:'In Progress',
   Placed:'Placed',
   Cancelled:'Cancelled'
 }
