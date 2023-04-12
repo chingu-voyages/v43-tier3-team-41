@@ -11,7 +11,7 @@ const SearchPageContentList = () => {
           <h1 className='font-medium text-2xl'> No Products to Display</h1>
           <p className='text-xl'>Click <button className="text-primary text-xl" onClick={() => window.location.reload()}>Here</button> to go to all products...</p>
         </div>
-        : <ul className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3'>
+        : <ul className='grid grid-cols-1 md:grid-cols-2 min-[1200px]:grid-cols-3 lg:shrink-0 gap-3'>
             {currentPosts.map((item) => {
               return <SearchPageListItem item={item} />;
             })}

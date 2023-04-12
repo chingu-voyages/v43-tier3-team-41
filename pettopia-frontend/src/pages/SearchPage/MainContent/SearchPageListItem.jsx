@@ -15,35 +15,43 @@ const SearchPageListItem = ({ item }) => {
 
   return (
     <li key={item.productId}>
-      <div className='card w-[100%] bg-base-100 shadow-xl h-84'>
+      <div className='card w-[100%] bg-base-100 shadow-xl h-84 group/item'>
         <figure>
           <img src={item.mainImageUrl} alt={item.name} />
         </figure>
-        <div className='card-body min-h-[190px]'>
+        <div className='card-body gap-0 md:min-h-[234px]'>
           <h2 className='card-title'>
             {`${item.brand ?? defaultBrand}`}
             <div className='badge badge-secondary'>{`$${item.price}`}</div>
           </h2>
-          <p className='card-paragraph'>
-            {' '}
+          <p className='card-paragraph py-1'>
             {`${
               description.length > 50
                 ? description.slice(0, 50) + '...'
                 : description
-            }`}{' '}
+            }`}
           </p>
           <p>{item.description}</p>
-          <div className='card-actions justify-end'>
-            <div className='badge badge-outline'>{item.categories[item.categories.length - 1] ?? 'Dogs'}</div>
-            <button onClick={() => handleAddToCart(item)}> Add To Cart </button>
-            {/* Show all Categories as badges */}
-            {/* {item.categories.map((category, index) => {
-                return(
-                  <div key={index} className='badge badge-outline'>{category.length > 10 ? category.slice(0,15) + '...' : category}</div>
-                )
-              })
-            } */}
+          <div className='card-actions pb-2 border-2 border-b-gray-200 border-t-0 border-l-0 border-r-0'>
+            <div className='badge border-none badge-outline pl-0'>{item.categories[item.categories.length - 1] ?? 'Dogs'}</div>
           </div>
+          <div className="mt-2 w-[60%]"><button className="btn btn-primary normal-case"onClick={() => handleAddToCart(item)}> 
+          <label tabIndex={0} className="mr-1">
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-5 w-5'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='#F3EEEE'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+                  />
+                </svg>
+            </label> Add To Cart </button></div>
         </div>
       </div>
     </li>
