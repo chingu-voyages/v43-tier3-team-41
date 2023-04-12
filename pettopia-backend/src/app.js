@@ -16,6 +16,7 @@ app.use('/api/v1/test', require('./routes/test.routes'))
 app.use('/api/v1/user', require('./routes/user.routes'))
 app.use('/api/v1/auth', require('./routes/auth.routes'))
 app.use('/api/v1/orders', require('./routes/order.routes'))
+app.use('/api/v1/stripe', require('./routes/stripe.routes'))
 // unused routes
 app.use('/api/v1/clients', require('./routes/client.routes'))
 //app.use('/api/v1/users', require('./routes/user.routes'))
