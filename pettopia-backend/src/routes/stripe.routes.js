@@ -1,7 +1,7 @@
 const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_KEY);
 const endpointSecret = "whsec_Fqslcx7B92mSoNCQgvIyp9OoQcZI3eVe";
-
+const express = require('express')
 
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
@@ -80,7 +80,7 @@ router.post('/checkout/:orderId', isAuth, (req, res) =>{
 // Ensure the key is kept out of any version control system you might be using.
 
 
-router.post('/checkoutCompleted', (request, response) => {
+router.post('/checkoutCompleted', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
 
   let event;
