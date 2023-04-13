@@ -1,5 +1,8 @@
 const Stripe = require('stripe')
-const stripe = Stripe(process.env.STRIPE_KEY)
+const stripe = Stripe(process.env.STRIPE_KEY);
+const endpointSecret = "whsec_Fqslcx7B92mSoNCQgvIyp9OoQcZI3eVe";
+
+
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
 const Order = require('../models/Order');
@@ -35,6 +38,9 @@ router.post('/checkout/:orderId', isAuth, (req, res) =>{
 			}}))
 		const session = await stripe.checkout.sessions.create({
 			line_items:line_items,
+			metadata:{
+				orderId:orderId
+			},
 			mode:'payment', 
 			success_url:process.env.CLIENT_URL+req.body.success_url,
 			cancel_url:process.env.CLIENT_URL+req.body.cancel_url
@@ -54,4 +60,62 @@ router.post('/checkout/:orderId', isAuth, (req, res) =>{
 	})
 	//res.send(userId);
 })
+
+
+// auto-generated code for listening to stripe webhook events
+// server.js
+//
+// Use this sample code to handle webhook events in your integration.
+//
+// 1) Paste this code into a new file (server.js)
+//
+// 2) Install dependencies
+//   npm install stripe
+//   npm install express
+//
+// 3) Run the server on http://localhost:4242
+//   node server.js
+
+// The library needs to be configured with your account's secret key.
+// Ensure the key is kept out of any version control system you might be using.
+
+
+router.post('/checkoutCompleted', (request, response) => {
+  const sig = request.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+    response.status(400).send(`Webhook Error: ${err.message}`);
+    return;
+  }
+
+  // Handle the event
+  switch (event.type) {
+    case 'checkout.session.async_payment_succeeded':
+      const checkoutSessionAsyncPaymentSucceeded = event.data.object;
+      // Then define and call a function to handle the event checkout.session.async_payment_succeeded
+      break;
+    case 'checkout.session.completed':
+      const checkoutSessionCompleted = event.data.object;
+      console.log(`${JSON.stringify(checkoutSessionCompleted)}`)
+      // Then define and call a function to handle the event checkout.session.completed
+      break;
+    case 'payment_intent.succeeded':
+      const paymentIntentSucceeded = event.data.object;
+      // Then define and call a function to handle the event payment_intent.succeeded
+      break;
+    // ... handle other event types
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  // Return a 200 response to acknowledge receipt of the event
+  response.send();
+});
+
+
+
 module.exports = router
