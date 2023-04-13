@@ -2,13 +2,12 @@ export default function HomeCard(props) {
   const { title, imageSrc, alt } = props;
 
   return (
-    <div className='card w-96 bg-base-100 shadow-xl image-full'>
-      <figure>
-        <img src={imageSrc} alt={alt} />
-      </figure>
-      <div className='card-body items-center'>
-        <p className='card-title place-items-center text-center'>{title}</p>
-      </div>
+    <div>
+        <div className="flex justify-center">
+        <div className="rounded-full border-[3px] p-2 border-[#4bb9e3] h-36 w-36 hover:cursor-pointer">
+        <img className="h-full mx-auto" width={'70%'} src={imageSrc} alt={alt} />
+        </div>
+        </div>
     </div>
   );
 }

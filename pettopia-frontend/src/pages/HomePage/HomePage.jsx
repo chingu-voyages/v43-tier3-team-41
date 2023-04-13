@@ -4,37 +4,30 @@ import CarouselItem from './carouselItems';
 
 export default function HomePage() {
   return (
-    <>
-      <div>
-        <img src='https://picsum.photos/id/237/1200/300' alt='1024×320' />
-      </div>
-      <br />
-      <div className='flex w-full gap-6'>
+    <section>
+
+      <section className='mt-5'>
+          <img className=' w-full max-h-[450px] object-cover' src='/PetTopia.png' alt="Pettopia" style={{objectPosition: '75% 30%'}}/>
+      </section>
+      
+      <div className='w-[95%] md:w-[90%] lg:w-[70%] m-auto py-5 my-2'>
+      <div className='grid grid-cols-3'>
         <HomeCard
           title='Food'
-          imageSrc='https://picsum.photos/2000/3000.jpg'
-          alt='food'
-        />
-        <HomeCard
-          title='Clothing'
-          imageSrc='https://picsum.photos/2000/3000.jpg'
-          alt='clothing'
+          imageSrc='/foodbowl.svg'
+          alt='Food'
         />
         <HomeCard
           title='Toys'
-          imageSrc='https://picsum.photos/2000/3000.jpg'
-          alt='toy'
+          imageSrc='/toy-pic.svg'
+          alt='Toys'
         />
         <HomeCard
-          title={
-            <>
-              Supplies
-              <br />&<br /> Accessories
-            </>
-          }
-          imageSrc='https://picsum.photos/2000/3000.jpg'
-          alt='toys'
+          title='Treats'
+          imageSrc='/treat-pic.svg'
+          alt='Treats'
         />
+      </div>
       </div>
 
       <div className='grid grid-cols-3 gap-4'>
@@ -73,6 +66,6 @@ export default function HomePage() {
         <CarouselItem src='https://picsum.photos/id/125/430/300' alt='Burger' />
         <CarouselItem src='https://picsum.photos/id/583/420/300' alt='Burger' />
       </div>
-    </>
+    </section>
   );
 }

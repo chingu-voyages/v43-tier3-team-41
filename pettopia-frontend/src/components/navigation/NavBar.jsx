@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SearchContext from '../../Context/SearchContext/SearchContext';
-import AppContext from '../../AppContext';
 import NavBarShopCartItem from './NavBarShopCartItem';
 
 const THEMES = [
