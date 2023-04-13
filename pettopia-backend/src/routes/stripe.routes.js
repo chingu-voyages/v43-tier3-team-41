@@ -80,13 +80,13 @@ router.post('/checkout/:orderId', isAuth, (req, res) =>{
 // Ensure the key is kept out of any version control system you might be using.
 
 
-router.post('/checkoutCompleted', express.raw({type: 'application/json'}), (request, response) => {
+router.post('/checkoutCompleted', (request, response) => {
   const sig = request.headers['stripe-signature'];
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(request.rawBody, sig, endpointSecret);
   } catch (err) {
 	console.log(`400 error - ${err.message}`)
     response.status(400).send(`Webhook Error: ${err.message}`);
