@@ -10,6 +10,7 @@ import AppContext from './AppContext';
 import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage';
 import OrdersPage from './pages/OrdersPage';
+import CheckoutSuccess from './pages/CheckoutSuccess';
 
 function App() {
   //const cartId = '6424c6249193db4836879fe6';  
@@ -62,6 +63,8 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignUpPage />} />
           <Route path='/orders' element={<OrdersPage />} />
+          <Route path="/checkout-success" element={<CheckoutSuccess />} />
+          <Route path="/checkout-failed" element={<CheckoutFailed />} />
           <Route path='/product_for_now' element={<ProductDetail />} />
         </Routes>
         </div>
