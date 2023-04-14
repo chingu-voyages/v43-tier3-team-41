@@ -5,7 +5,12 @@ const { Cors } = require('./middlewares/cors')
 
 app.use(Cors);
 
-app.use(express.json())
+app.use(express.json({
+  limit: '5mb',
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}))
 app.use(express.urlencoded({extended: false}))
 app.use(morgan('dev'))
 

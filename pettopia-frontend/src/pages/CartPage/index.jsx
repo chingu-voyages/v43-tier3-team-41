@@ -37,8 +37,8 @@ export default function CartPage() {
         Authorization: localStorage.getItem('token'),
       },
       body:JSON.stringify({
-          success_url:'orders',
-          cancel_url: 'cart'
+          success_url:'checkout-success',
+          cancel_url: 'checkout-failed'
         })
     }))
     .then(res => res.json())
@@ -93,7 +93,7 @@ export default function CartPage() {
         })
           .then((response) => response.json())
           .then((data) => {
-            getCart();
+            getCart(setCartItems);
           })
           .then(() => setFetchingData(false))
           .catch((err) => console.error(err));
@@ -115,6 +115,32 @@ export default function CartPage() {
       }
     }
   };
+  const removeItemFromCart = (productId) => {
+    
+      if (
+        cartItems.find(
+          (cartItem) =>
+            cartItem.product.productId == productId
+        )
+      ) {
+        //console.log(`item count is 1, so removing item from cart`);
+        setFetchingData(true);
+        fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('token'),
+          },
+          body: JSON.stringify({}),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            getCart(setCartItems);
+          })
+          .then(() => setFetchingData(false))
+          .catch((err) => console.error(err));
+      }
+  }
   const calculateSum = () => {
     if (cartItems.length > 0) {
       const sum = cartItems.reduce(
@@ -151,7 +177,7 @@ export default function CartPage() {
         	)
 		}
     </div>
-      <table className='hover table-fixed table-compact w-full'>
+      <table className='hover table table-compact w-full'>
         <thead className=''>
           <tr>
             <th></th>
@@ -176,12 +202,13 @@ export default function CartPage() {
                 key={cartItem.product.productId}
                 className={`${fetchingData ? 'opacity-30' : ''}`}
               >
-                <td></td>
+                <td><div className='btn' onClick={(e) =>removeItemFromCart(cartItem.product.productId)}>x</div></td>
                 <td className='items-center'>
                   <div className='flex flex-row'>
                     <img
                       className='md:w-32 lg:w-48 rounded-full w-50 h-50'
                       src={cartItem.product.imageUrl}
+                      alt='Product'
                     />
                     <p className='font-bold'>{cartItem.product.name}</p>
                   </div>
