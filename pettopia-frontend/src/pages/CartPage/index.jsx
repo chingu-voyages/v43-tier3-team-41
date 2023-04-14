@@ -37,8 +37,8 @@ export default function CartPage() {
         Authorization: localStorage.getItem('token'),
       },
       body:JSON.stringify({
-          success_url:'orders',
-          cancel_url: 'cart'
+          success_url:'checkout-success',
+          cancel_url: 'checkout-failed'
         })
     }))
     .then(res => res.json())
