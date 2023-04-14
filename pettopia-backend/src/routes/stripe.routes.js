@@ -107,10 +107,10 @@ router.post('/checkoutCompleted', async (request, response) => {
 			Order.findById(orderId)
 			.then(order =>{
 				console.log('deleting cart related to order');
-				Cart.deleteOne({$_id: order.cart._id})
+				Cart.deleteOne({_id: order.cart._id})
 				.then(() =>{
 					console.log('updating order status');
-					Order.updateOne({$_id:order._id}, {status:ORDER_STATUS.Placed})
+					Order.updateOne({_id:order._id}, {status:ORDER_STATUS.Placed})
 					.then(() =>response.send())
 				})
 			})
