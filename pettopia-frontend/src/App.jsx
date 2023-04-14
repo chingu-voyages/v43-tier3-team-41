@@ -11,6 +11,7 @@ import LoginPage from './pages/LoginPage'
 import SignUpPage from './pages/SignUpPage';
 import OrdersPage from './pages/OrdersPage';
 import CheckoutSuccess from './pages/CheckoutSuccess';
+import CheckoutFailed from './pages/Checkout-Failed';
 
 function App() {
   //const cartId = '6424c6249193db4836879fe6';  

@@ -22,7 +22,8 @@ CTRL.getOrders = async (req, res) => {
             }))
             return {
               cart: cartItems,
-              total: productTotals.reduce((accum, total) => accum+total, 0)
+              total: productTotals.reduce((accum, total) => accum+total, 0),
+              created_at: order.created_at
             }
           })
      )
