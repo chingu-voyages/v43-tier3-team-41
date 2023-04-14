@@ -20,6 +20,7 @@ function App() {
 
   const [authToken, setAuthToken] = useState(null);
   const [fetchingCartData, setFetchingCartData] = useState(false);
+  const [cartFetchingError, setCartFetchingError] = useState(false);
   useEffect(() =>{
     console.log('welcome to app');
   })
@@ -37,8 +38,10 @@ function App() {
         const data = await response.json()
         if(data.cartItems) {setCartItems(data.cartItems);} 
         setFetchingCartData(false)
+        setCartFetchingError(false);
       } catch (error) {
         console.log(error)
+        setCartFetchingError(true);
       }
 	}
 
@@ -50,7 +53,9 @@ function App() {
       // setAuthToken
       getCart,
       backendUrl,
-      fetchingCartData
+      fetchingCartData,
+      cartFetchingError,
+      setCartFetchingError
     }}>
         <BrowserRouter>
         <SearchProvider>

@@ -38,8 +38,11 @@ const THEMES = [
 ];
 
 export default function NavBar() {
-  // Themeing
   const [theme, setTheme] = useState('light');
+  const { handleSearchTermSubmit, searchTerm, setSearchTerm, cartItems, getAllProducts} =
+    useContext(SearchContext);
+
+  const {backendUrl} = useContext(AppContext)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -49,9 +52,6 @@ export default function NavBar() {
     let themeVal = e.target.getAttribute('data-set-theme');
     setTheme(themeVal);
   };
-
-  const { handleSubmit, searchTerm, setSearchTerm, cartItems } =
-    useContext(SearchContext);
 
   const calculateSum = () => {
     if (cartItems.length > 0) {
@@ -65,58 +65,41 @@ export default function NavBar() {
   };
   const subTotal = calculateSum();
 
-  // const cartItems2 = [
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  //   {
-  //     product: {
-  //       productId: '44374610',
-  //       name: 'Milk-Bone Soft and Chewy Dog Treats, Beef &amp; Filet Mignon Recipe Wi…',
-  //       price: 14.48,
-  //       imageUrl:
-  //       "https://i5.walmartimages.com/asr/9f41e8e0-b19b-4ae9-bb1a-bd5401eb9567.212044427bf68f7bdc03f749d2e2983a.jpeg?odnHeight=180&odnWidth=180&odnBg=FFFFFF",
-  //       productUrl:
-  //         'https://www.walmart.com/ip/Milk-Bone-Soft-and-Chewy-Dog-Treats-Beef-Fi…',
-  //       rating: 4.7,
-  //     },
-  //   },
-  // ];
+  const isUserloggedIn = localStorage.getItem('token') !== null
+  
+  const handleSignOut = () => {
+    localStorage.removeItem('token')
+    window.location.reload()
+  }
 
-  // const meow = cartItems2.map((cartItem) => console.log(cartItem.product.name));
+  const checkoutCart = () => {
+    fetch(`${backendUrl}/api/v1/orders`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('token'),
+      },
+    })
+  .then( res => res.json())
+  .then(data => data.orderId)
+  .then(orderId =>fetch(`${backendUrl}/api/v1/stripe/checkout/${orderId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: localStorage.getItem('token'),
+      },
+      body:JSON.stringify({
+          success_url:'orders',
+          cancel_url: 'cart'
+        })
+    }))
+    .then(res => res.json())
+    .then(data => {
+      //console.log(data.url);
+      window.location.assign(data.url)
+    })
+    .catch(err => console.error(err))
+  }
 
   return (
     <header className='w-100 bg-gray-600'>
@@ -204,7 +187,7 @@ export default function NavBar() {
         <div className='navbar-center hidden lg:flex'>
           <ul className='menu menu-horizontal px-1'>
             <li>
-              <Link to='/search' className='text-white'>
+              <Link to='/search' onClick={() => getAllProducts()}className='text-white'>
                 All Products
               </Link>
             </li>
@@ -212,7 +195,7 @@ export default function NavBar() {
         </div>
         <form
           onSubmit={(e) => {
-            handleSubmit(e);
+            handleSearchTermSubmit(e);
           }}
           className='form-control flex-none gap-2'
         >
@@ -248,51 +231,69 @@ export default function NavBar() {
           </div>
         </form>
         <div className='navbar-end'>
-          <div className='dropdown dropdown-end'>
-            <label tabIndex={0} className='btn btn-ghost btn-circle'>
-              <div className='indicator'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='h-7 w-7'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='#F3EEEE'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth='2'
-                    d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
-                  />
-                </svg>
-                <span className='badge badge-sm indicator-item'>
-                  {cartItems.length}
-                </span>
-              </div>
-            </label>
-            <div
-              tabIndex={0}
-              className='mt-3 card card-compact dropdown-content w-96 bg-base-100 shadow'
-            >
-              <div className='card-body w-96'>
-                <div className='overflow-y-auto max-h-72'>
-                  {cartItems.length > 0
-                    ? cartItems.map((item) => (
-                        <NavBarShopCartItem item={item} />
-                      ))
-                    : <p> Your cart is currently empty. </p>
-                  }
-                </div>
-                <span className='font-bold text-lg'></span>
-                <span className='text-info'>Subtotal: ${subTotal} </span>
-                <div className='card-actions'>
-                  <button className='btn btn-primary btn-block'>
-                    <Link to='/cart'> View cart </Link>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+              {isUserloggedIn && 
+                <>
+                  <button className="btn btn-outline text-white normal-case mr-1" onClick={() => handleSignOut()}>Sign Out</button>
+                  <div className='dropdown dropdown-end'>
+                    <label tabIndex={0} className='btn btn-ghost btn-circle'>
+                      <div className='indicator'>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          className='h-7 w-7'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          stroke='#F3EEEE'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            strokeWidth='2'
+                            d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
+                          />
+                        </svg>
+                        <span className='badge badge-sm indicator-item'>
+                          {cartItems.length}
+                        </span>
+                      </div>
+                    </label>
+                    <div
+                      tabIndex={0}
+                      className='mt-3 card card-compact dropdown-content w-96 bg-base-100 shadow'
+                    >
+                      <div className='card-body w-96'>
+                        <div className='overflow-y-auto max-h-72'>
+                          {cartItems.length > 0
+                            ? cartItems.map((item) => (
+                                <NavBarShopCartItem item={item} />
+                              ))
+                            : <p> Your cart is currently empty. </p>
+                          }
+                        </div>
+                        <span className='font-bold text-lg'></span>
+                        <span className='text-info ml-4'>Subtotal: ${subTotal} </span>
+                        <div className='card-actions justify-center'>
+
+                          <button className='btn btn-outline w-[45%]'>
+                            <Link to='/cart'> View cart </Link>
+                          </button>
+                          <button className='btn btn-primary w-[45%]' onClick={checkoutCart}>
+                            Checkout 
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              }
+              {!isUserloggedIn && 
+              <> 
+                <button className='btn btn-outline text-white normal-case'>
+                  <Link to={'/login'}>Login</Link>
+                </button>
+                <button className='btn btn-primary ml-2 normal-case'>
+                  <Link to={'/signup'}>Signup</Link>
+                </button>
+              </>}
         </div>
       </div>
     </header>
