@@ -96,13 +96,14 @@ router.post('/checkoutCompleted', (request, response) => {
   // Handle the event
   switch (event.type) {
     case 'checkout.session.async_payment_succeeded':
-      const checkoutSessionAsyncPaymentSucceeded = event.data.object;
-	  console.log(`async payment succeededn${JSON.stringify(checkoutSessionAsyncPaymentSucceeded)}`)
+    //   const checkoutSessionAsyncPaymentSucceeded = event.data.object;
+	//   console.log(`async payment succeededn${JSON.stringify(checkoutSessionAsyncPaymentSucceeded)}`)
       // Then define and call a function to handle the event checkout.session.async_payment_succeeded
       break;
     case 'checkout.session.completed':
       const checkoutSessionCompleted = event.data.object;
-      console.log(`checkoutSession completed\n${JSON.stringify(checkoutSessionCompleted)}`)
+      const orderId = checkoutSessionCompleted.metadata.orderId;
+	  console.log(`order id for this session is ${orderId}`)
       // Then define and call a function to handle the event checkout.session.completed
       break;
     case 'payment_intent.succeeded':
