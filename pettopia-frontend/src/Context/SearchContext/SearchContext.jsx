@@ -93,9 +93,6 @@ export const SearchProvider = ({children}) => {
       }
 
       fetchingAllProducts()
-      // if(productData.length === 0) {
-      //   fetchingAllProducts()
-      // } 
     };
 
 

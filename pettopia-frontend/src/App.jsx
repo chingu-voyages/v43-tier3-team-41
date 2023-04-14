@@ -4,7 +4,7 @@ import NavBar from './components/navigation/NavBar';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/MainContent/SearchPage';
 import ProductDetail from './pages/ProductPage/ProductDetail';
-import { SearchProvider } from './Context/SearchContext/SearchContext';
+import SearchContext, { SearchProvider } from './Context/SearchContext/SearchContext';
 import CartPage from './pages/CartPage';
 import AppContext from './AppContext';
 import LoginPage from './pages/LoginPage'
@@ -20,9 +20,7 @@ function App() {
   const [authToken, setAuthToken] = useState(null);
   const [fetchingCartData, setFetchingCartData] = useState(false);
   const [cartFetchingError, setCartFetchingError] = useState(false);
-  useEffect(() =>{
-    console.log('welcome to app');
-  })
+  const {setCartItems} = useContext(SearchContext);
 
   const getCart = async (setCartItems) =>{
       try {
@@ -42,7 +40,13 @@ function App() {
         console.log(error)
         setCartFetchingError(true);
       }
-	}
+    }
+
+    useEffect(()=>{
+      if(localStorage.getItem('token') !== null){
+        getCart(setCartItems);
+      }
+    }, [])
 
   return (
 
