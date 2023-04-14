@@ -2,10 +2,11 @@ const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_KEY);
 const endpointSecret = "whsec_Fqslcx7B92mSoNCQgvIyp9OoQcZI3eVe";
 const express = require('express')
-
+const Order = require('../models/Order');
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
 const Order = require('../models/Order');
+const ORDER_STATUS = constants.ORDER_STATUS;
 const router = require('express').Router()
 const { isAuth } = require("../middlewares/authentication");
 router.get('/', (req, res) =>{
@@ -80,7 +81,7 @@ router.post('/checkout/:orderId', isAuth, (req, res) =>{
 // Ensure the key is kept out of any version control system you might be using.
 
 
-router.post('/checkoutCompleted', (request, response) => {
+router.post('/checkoutCompleted', async (request, response) => {
   const sig = request.headers['stripe-signature'];
 
   let event;
@@ -96,19 +97,29 @@ router.post('/checkoutCompleted', (request, response) => {
   // Handle the event
   switch (event.type) {
     case 'checkout.session.async_payment_succeeded':
-    //   const checkoutSessionAsyncPaymentSucceeded = event.data.object;
+		const checkoutSessionAsyncPaymentSucceeded = event.data.object;
 	//   console.log(`async payment succeededn${JSON.stringify(checkoutSessionAsyncPaymentSucceeded)}`)
       // Then define and call a function to handle the event checkout.session.async_payment_succeeded
       break;
     case 'checkout.session.completed':
-      const checkoutSessionCompleted = event.data.object;
-      const orderId = checkoutSessionCompleted.metadata.orderId;
-	  console.log(`order id for this session is ${orderId}`)
+    try{
+		const checkoutSessionCompleted = event.data.object;
+		const orderId = checkoutSessionCompleted.metadata.orderId;
+		const order = await Order.findById(orderId);
+		await Cart.deleteOne({$_id:order.cart._id});
+		await Order.updateOne({$_id:order._id}, {status:ORDER_STATUS.Placed});
+		
+	}  
+	catch(err){
+		console.error(`error updating order status : ${err}`);
+	}
+	  
+
       // Then define and call a function to handle the event checkout.session.completed
       break;
     case 'payment_intent.succeeded':
       const paymentIntentSucceeded = event.data.object;
-	  console.log(`payment intent succeededn${JSON.stringify(paymentIntentSucceeded)}`)
+	  //console.log(`payment intent succeededn${JSON.stringify(paymentIntentSucceeded)}`)
       // Then define and call a function to handle the event payment_intent.succeeded
       break;
     // ... handle other event types
