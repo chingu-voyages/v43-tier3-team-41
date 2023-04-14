@@ -99,20 +99,28 @@ router.post('/checkoutCompleted', async (request, response) => {
 		const checkoutSessionAsyncPaymentSucceeded = event.data.object;
 	//   console.log(`async payment succeededn${JSON.stringify(checkoutSessionAsyncPaymentSucceeded)}`)
       // Then define and call a function to handle the event checkout.session.async_payment_succeeded
-      break;
+    	break;
     case 'checkout.session.completed':
-    try{
-		const checkoutSessionCompleted = event.data.object;
-		const orderId = checkoutSessionCompleted.metadata.orderId;
-		const order = await Order.findById(orderId);
-		await Cart.deleteOne({$_id:order.cart._id});
-		await Order.updateOne({$_id:order._id}, {status:ORDER_STATUS.Placed});
+		try{
+			const checkoutSessionCompleted = event.data.object;
+			const orderId = checkoutSessionCompleted.metadata.orderId;
+			Order.findById(orderId)
+			.then(order =>{
+				console.log('deleting cart related to order');
+				Cart.deleteOne({$_id: order.cart._id})
+				.then(() =>{
+					console.log('updating order status');
+					Order.updateOne({$_id:order._id}, {status:ORDER_STATUS.Placed})
+					.then(() =>response.send())
+				})
+			})
+			.catch(err => response.send(err));
+			
+		}  
+		catch(err){
+			console.error(`error updating order status : ${err}`);
+		}
 		
-	}  
-	catch(err){
-		console.error(`error updating order status : ${err}`);
-	}
-	  
 
       // Then define and call a function to handle the event checkout.session.completed
       break;
