@@ -96,14 +96,11 @@ export const SearchProvider = ({children}) => {
     };
 
 
-    // useEffect(() => {
-    //     getAllProducts()
-    //     console.log('getting all products')
-
-    //     if(localStorage.getItem('token') !== null){
-    //       getCart(setCartItems);
-    //     }
-    //   }, []);
+    useEffect(() => {
+        if(localStorage.getItem('token') !== null){
+          getCart(setCartItems);
+        }
+      }, []);
 
       const handleAddToCart = async (item) => {
         

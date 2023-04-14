@@ -4,24 +4,11 @@ import { useContext } from 'react';
 import SearchContext from '../../../Context/SearchContext/SearchContext';
 
 const SearchPage = () => {
-  // const {productData} = useContext(SearchContext);
-  // const {allBrands, setAllBrands} = useState([]);
+  const {getAllProducts} = useContext(SearchContext);
 
-  // useEffect(() => {
-  //   let tempAllBrands = []; 
-  //   if(productData.length > 0){
-  //     productData.forEach(element => {
-  //       tempAllBrands.push(element.brand);
-  //     });
-  //   }
-
-  //   setAllBrands([...tempAllBrands])
-    
-  // }, [productData])
-
-  // useEffect(() => {
-  //   console.log(allBrands)
-  // }, [allBrands])
+  useEffect(()=>{
+    getAllProducts()
+  }, [])
 
   return (
     <div>
