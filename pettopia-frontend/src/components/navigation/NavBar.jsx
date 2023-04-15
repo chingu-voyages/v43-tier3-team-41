@@ -153,12 +153,16 @@ export default function NavBar() {
               </li>
             </ul>
           </div>
+          <div className='text-2xl '>
           <a
             href='/'
-            className='btn btn-ghost normal-case text-xl px-1 text-white transition ease-in-out delay-80 hover:-translate-y-1 hover:scale-110 duration-300 ...'
+            className='normal-case text-xl px-1 text-white min-w-[100px] flex items-center transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300'
           >
-            Pettopia
+            <img className="inline-block" src="/logo.png" alt="logo" height={'50px'}
+          width={'50px'} />
+          <span>Pettopia</span>
           </a>
+          </div>
           <div className='dropdown dropdown-end ml-3'>
             <label
               tabIndex={0}
