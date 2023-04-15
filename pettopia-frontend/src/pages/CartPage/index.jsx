@@ -4,7 +4,8 @@ import AppContext from '../../AppContext';
 import SearchContext from '../../Context/SearchContext/SearchContext';
 export default function CartPage() {
   const { cartItems, setCartItems } = useContext(SearchContext);
-  const { getCart, backendUrl, fetchingCartData, cartFetchingError } = useContext(AppContext);
+  const { getCart, backendUrl, fetchingCartData, cartFetchingError } =
+    useContext(AppContext);
   const navigate = useNavigate();
   const [fetchingData, setFetchingData] = useState(false);
 
@@ -15,7 +16,7 @@ export default function CartPage() {
       getCart(setCartItems);
     }
   }, []);
-  
+
   const checkoutCart = () => {
     fetch(`${backendUrl}/api/v1/orders`, {
       method: 'POST',
@@ -24,25 +25,27 @@ export default function CartPage() {
         Authorization: localStorage.getItem('token'),
       },
     })
-  .then( res => res.json())
-  .then(data => data.orderId)
-  .then(orderId =>fetch(`${backendUrl}/api/v1/stripe/checkout/${orderId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: localStorage.getItem('token'),
-      },
-      body:JSON.stringify({
-          success_url:'checkout-success',
-          cancel_url: 'checkout-failed'
+      .then((res) => res.json())
+      .then((data) => data.orderId)
+      .then((orderId) =>
+        fetch(`${backendUrl}/api/v1/stripe/checkout/${orderId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('token'),
+          },
+          body: JSON.stringify({
+            success_url: 'checkout-success',
+            cancel_url: 'checkout-failed',
+          }),
         })
-    }))
-    .then(res => res.json())
-    .then(data => {
-      window.location.assign(data.url)
-    })
-    .catch(err => console.error(err))
-  }
+      )
+      .then((res) => res.json())
+      .then((data) => {
+        window.location.assign(data.url);
+      })
+      .catch((err) => console.error(err));
+  };
   const increaseItemQty = (productId) => {
     if (localStorage.getItem('token') === null) {
       navigate('/login');
@@ -110,30 +113,26 @@ export default function CartPage() {
     }
   };
   const removeItemFromCart = (productId) => {
-    
-      if (
-        cartItems.find(
-          (cartItem) =>
-            cartItem.product.productId === productId
-        )
-      ) {
-        setFetchingData(true);
-        fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: localStorage.getItem('token'),
-          },
-          body: JSON.stringify({}),
+    if (
+      cartItems.find((cartItem) => cartItem.product.productId === productId)
+    ) {
+      setFetchingData(true);
+      fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: localStorage.getItem('token'),
+        },
+        body: JSON.stringify({}),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          getCart(setCartItems);
         })
-          .then((response) => response.json())
-          .then((data) => {
-            getCart(setCartItems);
-          })
-          .then(() => setFetchingData(false))
-          .catch((err) => console.error(err));
-      }
-  }
+        .then(() => setFetchingData(false))
+        .catch((err) => console.error(err));
+    }
+  };
   const calculateSum = () => {
     if (cartItems.length > 0) {
       const sum = cartItems.reduce(
@@ -148,27 +147,35 @@ export default function CartPage() {
   return (
     <div className='flex flex-col gap-3'>
       <div className='font-bold flex flex-row gap-5 justify-center items-center'>
-        {cartFetchingError && <p className='text-lg'> Sorry! There was an error retrieving your items. Please try again.  </p>}
-        {fetchingCartData && !cartFetchingError && <p className='text-lg'>Loading Your Cart Data...</p>}
-        {!fetchingCartData && !cartFetchingError && cartItems.length === 0 && <p className='text-lg'>Your cart is currently empty - Total: $0.00</p>}
+        {cartFetchingError && (
+          <p className='text-lg'>
+            {' '}
+            Sorry! There was an error retrieving your items. Please try again.{' '}
+          </p>
+        )}
+        {fetchingCartData && !cartFetchingError && (
+          <p className='text-lg'>Loading Your Cart Data...</p>
+        )}
+        {!fetchingCartData && !cartFetchingError && cartItems.length === 0 && (
+          <p className='text-lg'>Your cart is currently empty - Total: $0.00</p>
+        )}
         {!fetchingCartData && !cartFetchingError && cartItems.length > 0 && (
-          	<>
-				<div className='text-lg'>Total</div>
-				<span>:</span>
-				<div>$</div>
-				<div className='text-lg'>{calculateSum().toFixed(2)}</div>
-				<div
-				className={`btn btn-outline ${
-					cartItems.length <= 0 ? 'disabled:opacity-25' : ''
-				}`}
-				onClick={checkoutCart}
-				>
-				Checkout
-				</div>
-          	</>
-        	)
-		}
-    </div>
+          <>
+            <div className='text-lg'>Total</div>
+            <span>:</span>
+            <div>$</div>
+            <div className='text-lg'>{calculateSum().toFixed(2)}</div>
+            <div
+              className={`btn btn-outline ${
+                cartItems.length <= 0 ? 'disabled:opacity-25' : ''
+              }`}
+              onClick={checkoutCart}
+            >
+              Checkout
+            </div>
+          </>
+        )}
+      </div>
       <table className='hover table table-compact w-full'>
         <thead className=''>
           <tr>
@@ -194,7 +201,16 @@ export default function CartPage() {
                 key={cartItem.product.productId}
                 className={`${fetchingData ? 'opacity-30' : ''}`}
               >
-                <td><div className='btn' onClick={(e) =>removeItemFromCart(cartItem.product.productId)}>x</div></td>
+                <td>
+                  <div
+                    className='btn'
+                    onClick={(e) =>
+                      removeItemFromCart(cartItem.product.productId)
+                    }
+                  >
+                    x
+                  </div>
+                </td>
                 <td className='items-center'>
                   <div className='flex flex-row'>
                     <img
