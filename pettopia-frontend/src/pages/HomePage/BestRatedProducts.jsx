@@ -34,7 +34,7 @@ const BestRatedProducts = ({HomePageData, page, num, setPage, h2Text}) => {
                 key={index}
                 onClick={() => setPage(pageChoice)}
                 className={
-                  pageChoice === page ? 'btn btn-active' : 'btn'
+                  pageChoice === page ? 'btn btn-active' : 'btn pag-btn'
                 }
               >
                 {pageChoice}
