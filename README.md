@@ -39,7 +39,8 @@
 - Products data was inserted in MongoDB Atlas instance prior to project running the application. 
 - The product data used was a subset of products in the pet categories on Walmart.com
 - In order to collect the data, the [Walmart Search Api service](https://serpapi.com/walmart-search-api) on the website [SerpApi](https://serpapi.com/walmart-search-api). This is a website which allows for scraping of products from many places. For e.g. Google Search results, eBay products. 
-- A subset of Walmart product data was inserted into MongoDB Atlas instance using some nodejs scripts. Found in dbScripts directy in the backend project. The api keys in each of the files need to modified by anyone who wants to use the script. The SerpApi.com website allows to create a free account with 100 free search requests. 
+- A subset of Walmart product data was inserted into MongoDB Atlas instance using some nodejs scripts. Found in dbScripts directory in the backend project. The api keys in each of the files need to modified by anyone who wants to use the script. The SerpApi.com website allows to create a free account with 100 free search requests. 
+- The populateProductsCollection.js and populateProdu
 
 ### Future scope
 - For starters, we want to add data from various sources and many more categories
