@@ -9,7 +9,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
 
 const SerpApi = require('google-search-results-nodejs');
 // 2nd email api_key
-const search = new SerpApi.GoogleSearch("088ccfe5d58aaf5d1a445d6fbe5afa05582ca19f952dfd0cc4d2575043521925");
+const search = new SerpApi.GoogleSearch(process.env.SERPAPI_KEY);
 
 // make the http GET request to BlueCart API
 function populateDB(){
