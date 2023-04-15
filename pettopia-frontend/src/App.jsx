@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import NavBar from './components/navigation/NavBar';
+import Footer from './components/navigation/Footer';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/MainContent/SearchPage';
 import ProductDetail from './pages/ProductPage/ProductDetail';
@@ -58,7 +59,7 @@ function App() {
         <BrowserRouter>
         <SearchProvider>
         <NavBar />
-        <div className='container'>
+        <div className='container min-h-[90vh]'>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/search' element={<SearchPage />} />
@@ -71,6 +72,7 @@ function App() {
           <Route path='/product_for_now' element={<ProductDetail />} />
         </Routes>
         </div>
+        <Footer/>
         </SearchProvider>
     </BrowserRouter>
     </AppContext.Provider>

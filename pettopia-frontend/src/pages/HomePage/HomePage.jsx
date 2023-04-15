@@ -16,7 +16,7 @@ export default function HomePage() {
   
   return (
     <>
-      <section className='mt-5 select-none'>
+      <section className='mt-8 select-none'>
         <img
           className='w-full max-h-[450px] object-cover'
           src='/PetTopia.png'
