@@ -41,7 +41,7 @@ export default function Signup(){
   }
 
     return(
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="flex flex-col items-center  mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="">
         {
                 fields.map(field=>

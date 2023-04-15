@@ -4,13 +4,15 @@ import AppContext from '../../AppContext';
 export default function Orders(){
 	const { authToken, backendUrl } = useContext(AppContext);
 	const [orders, setOrders] = useState([]);
+	const [fetchingData, setFetchingData] = useState(false);
 	const navigate = useNavigate();
 	useEffect(() =>{
 		if(localStorage.getItem("token") == null){
 			navigate('/login', {state : {url:'/orders'}})
 		}
 		else{
-				fetch(`${backendUrl}/api/v1/orders`, {
+			setFetchingData(true);	
+			fetch(`${backendUrl}/api/v1/orders`, {
 			method:"GET",
 			headers:{
 							'Content-Type': 'application/json', 
@@ -20,7 +22,8 @@ export default function Orders(){
 		.then(res =>res.json())
 		.then(data =>{
 			setOrders(data.orders);
-			console.log(data.orders)
+			console.log(data.orders);
+			setFetchingData(false);	
 		})
 		.catch(err => console.log(err))	
 		}
@@ -35,8 +38,7 @@ export default function Orders(){
 		return 0;
 	}
 
-	return (
-		<div className="container my-12 mx-auto px-4 md:px-12">
+	return fetchingData ? <div className='flex flex-col w-full items-center justify-between'><h1 className='mb-6 text-5xl font-bold'>Loading Orders...</h1></div> : (<div className="container my-12 mx-auto px-4 md:px-12">
 			<div className="flex flex-col gap-1">
 			{orders ? 
 			orders.map((order, index) =>{
@@ -45,8 +47,8 @@ export default function Orders(){
 					 	<div className="flex flex-col gap-1 border-solid py-2 px-5 border-2 border-sky-500">
 					 		<div className="text-center font-large font-bold">{`Order #${index + 1}`}</div>
 					 		<div className="font-bold text-center">{`Total : $ ${order.total.toFixed(2)}`}</div>
-							<div>{`Status : ${order.status}`}</div>
-							<div>{`Date : ${order.created_at}`}</div>
+							<div className='text-center font-large font-bold'>{`Status : ${order.status}`}</div>
+							<div className='text-center font-large font-bold'>{`Date : ${new Date(order.created_at).toLocaleDateString()}`}</div>
 					 		<div tabIndex={0} className="flex flex-col gap-1 border border-base-300 bg-base-100 rounded-box group collapse collapse-arrow">
 							<div class="collapse-title bg-primary text-primary-content">Products</div>
 					 		<div className='collapse-content'>{order.cart.map(item =>

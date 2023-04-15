@@ -60,7 +60,7 @@ export default function Login(){
     // }, [authToken]);
 
     return(
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="flex flex-col items-center mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="-space-y-px">
             {
                 fields.map(field=>
