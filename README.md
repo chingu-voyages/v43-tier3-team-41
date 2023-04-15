@@ -1,12 +1,9 @@
-## Pettopia
+## Pettopia - [website link](https://pettopia-frontend.onrender.com)
 ### Overview
-- An application to act as a one-stop shop for all pet products
+- An application to act as a one-stop shop for Pet products
 - Giving customers ability to easily browse and/or buy products, create a profile with saved products from previous sessions, make payments, etc.
 - Giving product owners ability to add products, update price
 - An admin should be able to control
-
-### MVP
-
 
 ### Features 
 - Login, Signup using jwt authentication tokens
