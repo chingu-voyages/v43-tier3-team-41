@@ -6,7 +6,7 @@
 - An admin should be able to control
 
 ### MVP
-- A website with basic features of an eCommerce app for pet products
+
 
 ### Features 
 - Login, Signup using jwt authentication tokens
@@ -42,17 +42,8 @@
 - In order to collect the data, the [Walmart Search Api service](https://serpapi.com/walmart-search-api) on the website [SerpApi](https://serpapi.com/walmart-search-api). This is a website which allows for scraping of products from many places. For e.g. Google Search results, eBay products. 
 - A subset of Walmart product data was inserted into MongoDB Atlas instance using some nodejs scripts. Found in dbScripts directy in the backend project. The api keys in each of the files need to modified by anyone who wants to use the script. The SerpApi.com website allows to create a free account with 100 free search requests. 
 
-# voyage-tasks
-
-Your project's `readme` is as important to success as your code. For 
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
-
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point - 
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
-
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
-
-> Own it & Make it your Own!
+### Future scope
+- For starters, we want to add data from various sources and many more categories
+- Real-time prices for products by web scraping products at regular intervals through daily background jobs
+- Adding ability for sellers to upload products
+- Product recommendations for users based on search and purchase history
