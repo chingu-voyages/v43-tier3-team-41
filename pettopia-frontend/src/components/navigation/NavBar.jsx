@@ -102,7 +102,7 @@ export default function NavBar() {
   }
 
   return (
-    <header className='w-100 bg-gray-600'>
+    <header className='w-100 bg-[#5784bb]'>
       <div className='navbar container sticky z-10'>
         <div className='navbar-start'>
           <div className='dropdown'>
