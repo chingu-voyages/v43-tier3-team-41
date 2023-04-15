@@ -39,7 +39,7 @@ export default function Orders(){
 	}
 
 	return fetchingData ? <div className='flex flex-col w-full items-center justify-between'><h1 className='mb-6 text-5xl font-bold'>Loading Orders...</h1></div> : (<div className="container my-12 mx-auto px-4 md:px-12">
-			<div className="flex flex-col gap-1">
+			<div className="flex flex-col gap-5">
 			{orders ? 
 			orders.map((order, index) =>{
 				return (
@@ -47,10 +47,10 @@ export default function Orders(){
 					 	<div className="flex flex-col gap-1 border-solid py-2 px-5 border-2 border-sky-500">
 					 		<div className="text-center font-large font-bold">{`Order #${index + 1}`}</div>
 					 		<div className="font-bold text-center">{`Total : $ ${order.total.toFixed(2)}`}</div>
-							<div className='text-center font-large font-bold'>{`Status : ${order.status}`}</div>
+							<div className={`text-center font-large font-bold ${order.status === 'Placed' ? 'text-green-700' : 'text-red-600'}`}>{`Status : ${order.status === 'Placed' ? 'Completed' : 'Cancelled'}`}</div>
 							<div className='text-center font-large font-bold'>{`Date : ${new Date(order.created_at).toLocaleDateString()}`}</div>
 					 		<div tabIndex={0} className="flex flex-col gap-1 border border-base-300 bg-base-100 rounded-box group collapse collapse-arrow">
-							<div class="collapse-title bg-primary text-primary-content">Products</div>
+							<div class="collapse-title bg-primary text-primary-content text-center">Products</div>
 					 		<div className='collapse-content'>{order.cart.map(item =>
 					 				(
 					 					<div className="flex gap-3 collapse-content">
