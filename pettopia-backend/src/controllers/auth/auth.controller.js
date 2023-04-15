@@ -21,6 +21,7 @@ CTRL.login = (req, res) => {
     }
 
     if (!user) {
+      console.log(`404 error - failing at line 24`)
       return res.status(404).json({
         ok: false,
         msg: "Username/Password invalid!",
@@ -28,15 +29,14 @@ CTRL.login = (req, res) => {
     }
 
     if (!bcrypt.compareSync(req.body.password, user.password)) {
+      console.log(`404 error - failing at line 31`)
       return res.status(404).json({
         ok: false,
         msg: "Username/Password invalid!",
       });
     }
 
-    let token = jwt.sign({ data: user }, config.SECRET_KEY, {
-      expiresIn: "12h",
-    });
+    let token = jwt.sign({ data: user }, config.SECRET_KEY);
 
     return res.status(201).json({
       ok: true,
