@@ -11,7 +11,8 @@ let fieldsState = {};
 fields.forEach(field=>fieldsState[field.id]='');
 
 export default function Login(){
-    const backendUrl = 'https://pettopia-backend.onrender.com'
+    const backendUrl = process.env.REACT_APP_URL
+    console.log(backendUrl)
     const navigate = useNavigate();
     const [loginState,setLoginState]=useState(fieldsState);
     // const { authToken, setAuthToken } = useContext(AppContext);
