@@ -47,3 +47,6 @@
 - Real-time prices for products by web scraping products at regular intervals through daily background jobs
 - Adding ability for sellers to upload products
 - Product recommendations for users based on search and purchase history
+
+### Contributors
+- https://github.com/VijayIyer
