@@ -1,25 +1,21 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppContext from '../../AppContext';
-import DeleteIcon from '../../components/deleteIcon';
 import SearchContext from '../../Context/SearchContext/SearchContext';
 export default function CartPage() {
-  // const { authToken } = useContext(AppContext);
   const { cartItems, setCartItems } = useContext(SearchContext);
   const { getCart, backendUrl, fetchingCartData, cartFetchingError } = useContext(AppContext);
   const navigate = useNavigate();
-  // const [cartItems, setCartItems] = useState([]);
   const [fetchingData, setFetchingData] = useState(false);
-  // useEffect(() =>console.log(authToken))
 
   useEffect(() => {
     if (localStorage.getItem('token') === null) {
-      // console.log(`authToken: ${authToken}`);
       navigate('/login', { state: { url: '/cart' } });
     } else {
       getCart(setCartItems);
     }
   }, []);
+  
   const checkoutCart = () => {
     fetch(`${backendUrl}/api/v1/orders`, {
       method: 'POST',
@@ -43,7 +39,6 @@ export default function CartPage() {
     }))
     .then(res => res.json())
     .then(data => {
-      //console.log(data.url);
       window.location.assign(data.url)
     })
     .catch(err => console.error(err))
@@ -79,10 +74,9 @@ export default function CartPage() {
       if (
         cartItems.find(
           (cartItem) =>
-            cartItem.product.productId == productId && cartItem.quantity == 1
+            cartItem.product.productId === productId && cartItem.quantity === 1
         )
       ) {
-        //console.log(`item count is 1, so removing item from cart`);
         fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
           method: 'POST',
           headers: {
@@ -120,10 +114,9 @@ export default function CartPage() {
       if (
         cartItems.find(
           (cartItem) =>
-            cartItem.product.productId == productId
+            cartItem.product.productId === productId
         )
       ) {
-        //console.log(`item count is 1, so removing item from cart`);
         setFetchingData(true);
         fetch(`${backendUrl}/api/v1/cart/remove/${productId}`, {
           method: 'POST',
@@ -147,7 +140,6 @@ export default function CartPage() {
         (totalPrice, obj) => totalPrice + obj.product.price * obj.quantity,
         0
       );
-      console.log(`sum is ${sum}`);
       return sum;
     }
     return 0;
