@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING, {
   useFindAndModify: false
 });
 const SerpApi = require('google-search-results-nodejs');
-const search = new SerpApi.GoogleSearch("b869d5c6500fd281ffc5ed4b8366a724277e3daba4c847a1fd3b23f042b2494e");
+const search = new SerpApi.GoogleSearch(process.env.SERPAPI_KEY);
 
 
 // set up the request parameters
