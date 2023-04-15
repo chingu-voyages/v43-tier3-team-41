@@ -31,7 +31,9 @@
   - `npm start`
 
 ### Deployment
-- The frontend and backend projects were deployed on different instances of 'Web Service' on [render platform](https://render.com/docs/web-services)
+- The frontend is deployed as a 'static service' on [render](https://render.com/docs/static-sites) while backend is deployed as a 'Web Service' on [render platform](https://render.com/docs/web-services)
+- [Frontend / Website URL](https://pettopia-frontend.onrender.com)
+- [Backend / API endpoint URL](https://pettopia-backend.onrender.com)
 
 ### Dependencies
 - Products data was inserted in MongoDB Atlas instance prior to project running the application. 
