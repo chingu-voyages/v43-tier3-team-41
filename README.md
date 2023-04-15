@@ -1,4 +1,5 @@
 ## Pettopia
+### Overview
 - An application to act as a one-stop shop for all pet products
 - Giving customers ability to easily browse and/or buy products, create a profile with saved products from previous sessions, make payments, etc.
 - Giving product owners ability to add products, update price
@@ -7,13 +8,14 @@
 ### MVP
 - A website with basic features of an eCommerce app for pet products
 
-## Implemented Features 
+### Features 
 - Login, Signup using jwt authentication tokens
 - Stripe integration for fulfilling orders
 - Searching products, filtering by different categories
 - Easy navigation between different pages
+- Ability to change UI theme
 
-## Steps to run project
+### Running the project
 - There are 2 separate projects - frontend and backend
 - The frontend holds UI logic as well as communicating with the backend on user actions
 - The backend holds the implementation for CRUD operations with database
@@ -31,7 +33,13 @@
   - `npm i`
   - `npm start`
 
-## Deployment
+### Deployment
+- The frontend and backend projects were deployed on different instances of 'Web Service' on [render platform](https://render.com/docs/web-services)
+
+### Dependencies
+- Products data was inserted in MongoDB Atlas instance prior to project running the application. 
+- The product data used was a subset of products in the pet categories on Walmart.com
+- In order to collect the data, a [Walmart Search Api service](https://serpapi.com/walmart-search-api) on the website [SerpApi](https://serpapi.com/walmart-search-api)  
 
 # voyage-tasks
 
