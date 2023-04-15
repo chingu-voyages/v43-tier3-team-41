@@ -23,7 +23,8 @@ CTRL.getOrders = async (req, res) => {
             return {
               cart: cartItems,
               total: productTotals.reduce((accum, total) => accum+total, 0),
-              created_at: order.created_at
+              created_at: order.created_at,
+              status:order.status
             }
           })
      )
@@ -61,8 +62,9 @@ CTRL.getOrder = (req, res) => {
       ok: true,
       order:{
         total:total, 
-        date: order.created_at,
-        cart: cart
+        created_at: order.created_at,
+        cart: cart,
+        status:order.status
       },
     });
   });
