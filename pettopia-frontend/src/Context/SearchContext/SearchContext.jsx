@@ -66,7 +66,143 @@ export const SearchProvider = ({children}) => {
         productType: 'Toys',
       },
       {
-        id: 'Purina', text: 'Purina', completed: false, label: 'PetType',
+        id: 'BARK', text: 'BARK', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: `Beggin'`, text: `Beggin'`, completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Blue Buffalo', text: 'Blue Buffalo', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Blue Dog Bakery', text: 'Blue Dog Bakery', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Canine Carry Outs', text: 'Canine Carry Outs', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Cesar', text: 'Cesar', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Chuckit!', text: 'Chuckit!', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Dog Chow', text: 'Dog Chow', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Gravy Train', text: 'Gravy Train', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Hartz', text: 'Hartz', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Hitt Brands', text: 'Hitt Brands', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Hyper Pet', text: 'Hyper Pet', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'IAMS', text: 'IAMS', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'JINX', text: 'JINX', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: `Kibbles 'N Bits`, text: 'TrustyPup', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'KONG', text: 'KONG', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'MASBRILL', text: 'MASBRILL', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Milk-Bone', text: 'Milk-Bone', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Moist & Meaty', text: 'Moist & Meaty', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Multipet', text: 'Multipet', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: `Nature's Recipe`, text: `Nature's Recipe`, completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Nerf Dog', text: 'Nerf Dog', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Nutrish', text: 'Nutrish', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Nylabone', text: 'Nylabone', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id:  `Ol' Roy`, text: `Ol' Roy`, completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Orijen', text: 'Orijen', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'PcEoTllar', text: 'PcEoTllar', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Pedigree', text: 'Pedigree', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Petstages', text: 'Petstages', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Pup-Peroni', text: 'Pup-Peroni', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Pure Balance', text: 'Pure Balance', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Purina', text: 'Purina', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Three Dog Bakery', text: 'Three Dog Bakery', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'TrustyPup', text: 'TrustyPup', completed: false, label: 'Brand',
+        petType: 'Dogs',
+      },
+      {
+        id: 'Vibrant Life', text: 'Vibrant Life', completed: false, label: 'Brand',
         petType: 'Dogs',
       },
     ])
