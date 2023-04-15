@@ -1,5 +1,8 @@
 # voyage-tasks
 
+## Pettopia
+- This is an application to act as a one-stop shop for all pet products
+
 Your project's `readme` is as important to success as your code. For 
 this reason you should put as much care into its creation and maintenance
 as you would any other component of the application.
