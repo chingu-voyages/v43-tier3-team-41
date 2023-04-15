@@ -27,7 +27,7 @@ export default function HomePage() {
         />
       </section>
 
-      <div className='w-[95%] md:w-[90%] lg:w-[70%] m-auto py-5 my-2 select-none'>
+      <div className='w-[95%] md:w-[90%] lg:w-[70%] m-auto pt-12 pb-5 my-2 select-none'>
         <div className='grid grid-cols-3'>
           <HomeCard title='Food' imageSrc='/foodbowl.svg' alt='Food' />
           <HomeCard title='Toys' imageSrc='/toy-pic.svg' alt='Toys' />

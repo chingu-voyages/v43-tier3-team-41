@@ -25,7 +25,7 @@ const BestRatedProducts = ({HomePageData, page, num, setPage, h2Text}) => {
       <>
         <div className='flex justify-between mt-3 mb-3'>
         <div className='my-auto'>
-          <h2 className='text-primary'> {h2Text} </h2>
+          <h2 className='text-primary text-2xl font-semibold'> {h2Text} </h2>
         </div>
         <div className='btn-group'>
           {bestRatedItemArr.map((pageChoice, index) => {
