@@ -1,10 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import NavBar from './components/navigation/NavBar';
+import Footer from './components/navigation/Footer';
 import HomePage from './pages/HomePage/HomePage';
 import SearchPage from './pages/SearchPage/MainContent/SearchPage';
 import ProductDetail from './pages/ProductPage/ProductDetail';
-import { SearchProvider } from './Context/SearchContext/SearchContext';
+import SearchContext, { SearchProvider } from './Context/SearchContext/SearchContext';
 import CartPage from './pages/CartPage';
 import AppContext from './AppContext';
 import LoginPage from './pages/LoginPage'
@@ -22,9 +23,6 @@ function App() {
   const [authToken, setAuthToken] = useState(null);
   const [fetchingCartData, setFetchingCartData] = useState(false);
   const [cartFetchingError, setCartFetchingError] = useState(false);
-  useEffect(() =>{
-    console.log('welcome to app');
-  })
 
   const getCart = async (setCartItems) =>{
       try {
@@ -44,7 +42,7 @@ function App() {
         console.log(error)
         setCartFetchingError(true);
       }
-	}
+    }
 
   return (
 
@@ -61,7 +59,7 @@ function App() {
         <BrowserRouter>
         <SearchProvider>
         <NavBar />
-        <div className='container z-0'>
+        <div className='container min-h-[90vh]'>
         <Routes>
           <Route path='/' element={<HomePage />} />
           <Route path='/search' element={<SearchPage />} />
@@ -74,6 +72,7 @@ function App() {
           <Route path='/product_for_now' element={<ProductDetail />} />
         </Routes>
         </div>
+        <Footer/>
         </SearchProvider>
     </BrowserRouter>
     </AppContext.Provider>

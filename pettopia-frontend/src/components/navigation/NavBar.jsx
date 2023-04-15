@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SearchContext from '../../Context/SearchContext/SearchContext';
-import AppContext from '../../AppContext';
 import NavBarShopCartItem from './NavBarShopCartItem';
+import AppContext from '../../AppContext';
 
 const THEMES = [
   'light',
@@ -102,7 +102,7 @@ export default function NavBar() {
   }
 
   return (
-    <header className='w-100 bg-gray-600'>
+    <header className='w-100 bg-primary'>
       <div className='navbar container sticky z-10'>
         <div className='navbar-start'>
           <div className='dropdown'>
@@ -153,12 +153,16 @@ export default function NavBar() {
               </li>
             </ul>
           </div>
+          <div className='text-2xl '>
           <a
             href='/'
-            className='btn btn-ghost normal-case text-xl px-1 text-white transition ease-in-out delay-80 hover:-translate-y-1 hover:scale-110 duration-300 ...'
+            className='normal-case text-xl px-1 text-white min-w-[100px] flex items-center transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300'
           >
-            Pettopia
+            <img className="inline-block" src="/logo.png" alt="logo" height={'50px'}
+          width={'50px'} />
+          <span>Pettopia</span>
           </a>
+          </div>
           <div className='dropdown dropdown-end ml-3'>
             <label
               tabIndex={0}

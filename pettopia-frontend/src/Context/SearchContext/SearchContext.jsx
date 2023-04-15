@@ -64,26 +64,39 @@ export const SearchProvider = ({children}) => {
         id: 'Dog Toys', text: 'All Toys', completed: false, label: 'Toys',
         petType: 'Dogs',
         productType: 'Toys',
-      }
+      },
+      {
+        id: 'Purina', text: 'Purina', completed: false, label: 'PetType',
+        petType: 'Dogs',
+      },
     ])
 
-    const getAllProducts = async () => {
-      try {
-        setFetchingData(true);
-        const response = await fetch(API_URL + '/products');
-        const data = await response.json();
-        setProductData(data.products);
-        setFetchingData(false);
-        setProductFetchingError(false);
-      } catch (error) {
-        setProductFetchingError(true);
+    const getAllProducts = () => {
+
+      const filterItems = filters.map(filter => filter.completed === true ? {...filter, completed: !filter.completed} : filter)
+      setFilters(filterItems);
+
+      setFilteredTerms([])
+
+      const fetchingAllProducts = async () => {
+        try {
+          setFetchingData(true);
+          const response = await fetch(API_URL + '/products');
+          const data = await response.json();
+          setProductData(data.products);
+          setFetchingData(false);
+          setProductFetchingError(false);
+          console.log('fetching all the products')
+        } catch (error) {
+          setProductFetchingError(true);
+        }
       }
+
+      fetchingAllProducts()
     };
 
 
     useEffect(() => {
-        getAllProducts()
-
         if(localStorage.getItem('token') !== null){
           getCart(setCartItems);
         }
@@ -124,6 +137,25 @@ export const SearchProvider = ({children}) => {
         navigate('/search')
     };
 
+    const handleLink = async(e) => {
+      e.preventDefault();
+      try {
+        setFetchingData(true);
+        const response = await fetch(`${API_URL}/products?q=${e.target.id}`);
+        const data = await response.json()
+        setProductData(data.products);
+        setFetchingData(false);
+        setProductFetchingError(false);
+        console.log('handling the link')
+      } catch (error) {
+        console.log(error)
+        setProductFetchingError(true);
+      }
+      navigate('/search')
+  };
+
+    
+
     const handleFormSubmit = (e) => {
       e.preventDefault();
     }
@@ -149,7 +181,8 @@ export const SearchProvider = ({children}) => {
             setCartItems,
             fetchingData,
             getAllProducts,
-            productFetchingError
+            productFetchingError,
+            handleLink
         }}>
             {children}
         </SearchContext.Provider>

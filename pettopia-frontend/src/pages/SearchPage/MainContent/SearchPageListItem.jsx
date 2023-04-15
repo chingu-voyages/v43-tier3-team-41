@@ -14,17 +14,18 @@ const SearchPageListItem = ({ item }) => {
   const {handleAddToCart} = useContext(SearchContext);
 
   return (
-    <li key={item.productId}>
-      <div className='card w-[100%] bg-base-100 shadow-xl h-84 group/item'>
+    <li className="list-none shadow-md rounded-[5%] bg-white" key={item.productId} >
+      <div className='card w-[100%] bg-base-100 h-84 group/item pt-8'>
         <figure>
-          <img src={item.mainImageUrl} alt={item.name} />
+          <img style={{borderRadius: '5%'}} src={item.mainImageUrl} alt={item.name} />
         </figure>
-        <div className='card-body gap-0 md:min-h-[234px]'>
-          <h2 className='card-title'>
+      </div>
+      <div className='card-body gap-0 md:min-h-[234px]'>
+          <h2 className='card-title text-lg'>
             {`${item.brand ?? defaultBrand}`}
             <div className='badge badge-secondary'>{`$${item.price}`}</div>
           </h2>
-          <p className='card-paragraph py-1'>
+          <p className='py-1'>
             {`${
               description.length > 50
                 ? description.slice(0, 50) + '...'
@@ -53,7 +54,6 @@ const SearchPageListItem = ({ item }) => {
                 </svg>
             </label> Add To Cart </button></div>
         </div>
-      </div>
     </li>
   );
 };
