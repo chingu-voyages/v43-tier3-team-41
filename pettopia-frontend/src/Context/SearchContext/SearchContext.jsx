@@ -20,7 +20,7 @@ export const SearchProvider = ({children}) => {
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = filteredPosts.slice(firstPostIndex, lastPostIndex);
     const [fetchingData, setFetchingData] = useState(false);
-    const API_URL = 'https://pettopia-backend.onrender.com/api/v1';
+    const API_URL = process.env.REACT_APP_URL+'/api/v1' //'https://pettopia-backend.onrender.com/api/v1';
     
     const [filters, setFilters] = useState([
       {
@@ -233,6 +233,7 @@ export const SearchProvider = ({children}) => {
 
 
     useEffect(() => {
+    console.log(`line 236 ${process.env.REACT_APP_URL}`)
         if(localStorage.getItem('token') !== null){
           getCart(setCartItems);
         }

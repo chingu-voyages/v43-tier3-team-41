@@ -18,7 +18,7 @@ function App() {
   //const cartId = '6424c6249193db4836879fe6';  
   //const cartId = null; 
   //const token = window.localStorage.getItem('token');
-  const backendUrl = 'https://pettopia-backend.onrender.com'
+  const backendUrl = process.env.REACT_APP_URL
 
   const [authToken, setAuthToken] = useState(null);
   const [fetchingCartData, setFetchingCartData] = useState(false);
