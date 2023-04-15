@@ -1,6 +1,6 @@
 const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_KEY);
-const endpointSecret = "whsec_Fqslcx7B92mSoNCQgvIyp9OoQcZI3eVe";
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 const Product = require('../models/Product');
 const Cart = require('../models/Cart');
 const Order = require('../models/Order');
