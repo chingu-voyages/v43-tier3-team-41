@@ -1,7 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import AppContext from '../../AppContext';
 import SearchContext from '../../Context/SearchContext/SearchContext';
+import {BsX} from 'react-icons/bs'
+
 export default function CartPage() {
   const { cartItems, setCartItems } = useContext(SearchContext);
   const { getCart, backendUrl, fetchingCartData, cartFetchingError } =
@@ -145,12 +147,11 @@ export default function CartPage() {
   };
 
   return (
-    <div className='flex flex-col gap-3'>
-      <div className='font-bold flex flex-row gap-5 justify-center items-center'>
+    <div className='text-center select-none'>
+      <div className='font-bold flex flex-row gap-5 justify-center items-center my-8'>
         {cartFetchingError && (
           <p className='text-lg'>
-            {' '}
-            Sorry! There was an error retrieving your items. Please try again.{' '}
+            Sorry! There was an error retrieving your items. Please try again.
           </p>
         )}
         {fetchingCartData && !cartFetchingError && (
@@ -160,112 +161,93 @@ export default function CartPage() {
           <p className='text-lg'>Your cart is currently empty - Total: $0.00</p>
         )}
         {!fetchingCartData && !cartFetchingError && cartItems.length > 0 && (
-          <>
-            <div className='text-lg'>Total</div>
-            <span>:</span>
-            <div>$</div>
-            <div className='text-lg'>{calculateSum().toFixed(2)}</div>
+          <h1 className='text-3xl'>Shopping Cart</h1>
+        )}
+      </div>
+      <div className='grid grid-cols-9 grid-rows-1 border-b pb-3'>
+        <p className='col-span-4 col-start-2 text-left'>Product</p>
+        <p>Price</p>
+        <p>Quantity</p>
+        <p>Total</p>
+      </div>
+
+      <div className='min-h-[400px]'> 
+        <ul >
+          {cartItems.map((cartItem) => {
+            return (
+              <li
+                key={cartItem.product.productId}
+                className={`${fetchingData ? 'opacity-30' : ''} grid grid-cols-9 grid-row-1 pt-3`}
+              >
+                <div className='grid grid-cols-3 col-span-4 col-start-2'>
+                  <img
+                    className='md:w-32 rounded-[5%] w-50 h-50'
+                    src={cartItem.product.imageUrl}
+                    alt='Product'
+                  />
+                  <p className='font-bold col-span-2 text-left'>{cartItem.product.name}</p>
+                </div>
+                <div className='h-[50%]'>
+                  <span>${cartItem.product.price}</span>
+                </div>
+                <div className='grid grid-cols-3 text-center h-[50%]'>
+                  <div
+                    className={`btn btn-outline rounded-2 ${
+                      fetchingData ? 'disabled' : ''
+                    }`}
+                    onClick={(e) => increaseItemQty(cartItem.product.productId)}
+                  >
+                    +
+                  </div>
+                  <div className='border-solid h-[50%]'>{cartItem.quantity}</div>
+                  <div
+                    className={`btn btn-outline rounded-2 ${
+                      fetchingData ? 'disabled' : ''
+                    }`}
+                    onClick={(e) => decreaseItemQty(cartItem.product.productId)}
+                  >
+                    -
+                  </div>
+                </div>
+                <div className='h-[50%]'>
+                  <div className='font-bold'>
+                    ${(cartItem.product.price * cartItem.quantity).toFixed(2)}
+                  </div>
+                </div>
+                <div
+                className='text-red-500 text-xl transition ease-in-out delay-150 hover:text-red-700 hover:text-2xl hover:cursor-pointer h-[50%]'
+                  onClick={(e) =>
+                    removeItemFromCart(cartItem.product.productId)
+                  }
+                >
+                  <BsX/>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      {!fetchingCartData && !cartFetchingError && cartItems.length > 0 && (
+        <>
+          <div className='text-2xl font-bold w-56 mx-auto mb-3'>SubTotal: ${calculateSum().toFixed(2)}</div>
+          
+          <div>
+            <Link to='/search' className={`btn btn-outline btn-primary mx-1`}>
+              <div>
+                Continue Shopping
+              </div>
+            </Link>
             <div
-              className={`btn btn-outline ${
+              className={`btn btn-primary ${
                 cartItems.length <= 0 ? 'disabled:opacity-25' : ''
-              }`}
+              } mx-1`}
               onClick={checkoutCart}
             >
               Checkout
             </div>
-          </>
-        )}
-      </div>
-      <table className='hover table table-compact w-full'>
-        <thead className=''>
-          <tr>
-            <th></th>
-            <th className='text-center w-1/2 font-bold p-2 border-b bg-indigo-700 text-white'>
-              Product
-            </th>
-            <th className='text-center w-1/4 font-bold p-2 border-b bg-indigo-700 text-white'>
-              Price
-            </th>
-            <th className='text-center w-1/4 font-bold p-2 border-b bg-indigo-700 text-white'>
-              Qty
-            </th>
-            <th className='text-center w-1/4 font-bold p-2 border-b bg-indigo-700 text-white'>
-              Subtotal
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {cartItems.map((cartItem) => {
-            return (
-              <tr
-                key={cartItem.product.productId}
-                className={`${fetchingData ? 'opacity-30' : ''}`}
-              >
-                <td>
-                  <div
-                    className='btn'
-                    onClick={(e) =>
-                      removeItemFromCart(cartItem.product.productId)
-                    }
-                  >
-                    x
-                  </div>
-                </td>
-                <td className='items-center'>
-                  <div className='flex flex-row'>
-                    <img
-                      className='md:w-32 lg:w-48 rounded-full w-50 h-50'
-                      src={cartItem.product.imageUrl}
-                      alt='Product'
-                    />
-                    <p className='font-bold'>{cartItem.product.name}</p>
-                  </div>
-                </td>
-                <td className='font-bold items-center'>
-                  <div className='flex flex-row gap-4 justify-center'>
-                    <div>$</div>
-                    <div>{cartItem.product.price}</div>
-                  </div>
-                </td>
-                <td className='font-bold items-center'>
-                  <div className='flex flex-row gap-3 justify-center'>
-                    <div
-                      className={`btn btn-outline rounded-2 ${
-                        fetchingData ? 'disabled' : ''
-                      }`}
-                      onClick={(e) =>
-                        increaseItemQty(cartItem.product.productId)
-                      }
-                    >
-                      +
-                    </div>
-                    <div className='border-solid'>{cartItem.quantity}</div>
-                    {/*<DeleteIcon /> */}
-                    <div
-                      className={`btn btn-outline rounded-2 ${
-                        fetchingData ? 'disabled' : ''
-                      }`}
-                      onClick={(e) =>
-                        decreaseItemQty(cartItem.product.productId)
-                      }
-                    >
-                      -
-                    </div>
-                  </div>
-                </td>
-                <td className='font-bold items-center'>
-                  <div className='flex flex-row gap-4 justify-center'>
-                    <div>$</div>
-                    <div className='font-bold'>
-                      {(cartItem.product.price * cartItem.quantity).toFixed(2)}
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }
