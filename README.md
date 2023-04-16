@@ -1,7 +1,7 @@
 ## Pettopia - [website link](https://pettopia-frontend.onrender.com)
 
 ### Demo
-[![Demo](http://i3.ytimg.com/vi/iuGXGLW21Gk/hqdefault.jpg)](https://youtu.be/iuGXGLW21Gk)
+[Pettopia.webm](https://user-images.githubusercontent.com/96846178/232263000-b4f80dcd-b2ad-49c6-8b60-a287d032886a.webm)
 
 
 ### Overview
@@ -55,3 +55,4 @@
 
 ### Contributors
 - https://github.com/VijayIyer
+- https://github.com/Katherine-KM
