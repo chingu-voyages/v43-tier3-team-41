@@ -11,7 +11,7 @@ const SearchPage = () => {
   }, [])
 
   return (
-    <div>
+    <div className='flex justify-center'>
         <SearchPageContent />
     </div>
   );
