@@ -23,10 +23,8 @@ export default function NavBar() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    console.log(theme)
   }, [theme]);
 
-  console.log(theme);
   const calculateSum = () => {
     if (cartItems.length > 0) {
       const sum = cartItems.reduce(
