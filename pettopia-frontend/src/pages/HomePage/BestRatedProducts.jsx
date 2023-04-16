@@ -44,7 +44,7 @@ const BestRatedProducts = ({HomePageData, page, num, setPage, h2Text}) => {
         </div>
       </div>
     
-        <div className='grid grid-cols-4 grid-rows-1 gap-5'>
+        <div className='grid xs:grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5'>
         {currentProducts.map((item, index) => (
           <SearchPageListItem key={index} item={item} />
         ))}
