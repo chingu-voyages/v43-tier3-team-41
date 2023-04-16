@@ -1,22 +1,17 @@
+import { useEffect, useState } from 'react';
 import SearchPageContent from './SearchPageContent';
+import { useContext } from 'react';
+import SearchContext from '../../../Context/SearchContext/SearchContext';
 
 const SearchPage = () => {
+  const {getAllProducts} = useContext(SearchContext);
 
-  
-
-  // const handleFilterChange = (filteredItems) => {
-  //   setFilteredItems(filteredItems);
-  //   setCurrentPage(1);
-  // };
-
-  // grab input from search box, filter items based off search box
+  useEffect(()=>{
+    getAllProducts()
+  }, [])
 
   return (
     <div>
-        {/* <SearchPageFilter
-          searchPageItems={searchPageItems}
-          onFilterChange={handleFilterChange}
-        /> */}
         <SearchPageContent />
     </div>
   );

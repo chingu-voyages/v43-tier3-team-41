@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 const ProductModel = require('./src/models/Product');
 const SerpApi = require('google-search-results-nodejs');
-const search = new SerpApi.GoogleSearch("6a2fc7974496083d6ac3a2a1e6c55efa2835982b8b29955c31164bc4d7011873");
+const search = new SerpApi.GoogleSearch(process.env.SERPAPI_KEY);
 
 const engine = "walmart";
 const targetCategories = 

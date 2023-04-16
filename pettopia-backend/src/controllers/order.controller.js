@@ -5,93 +5,94 @@ const constants = require('../constants');
 const ORDER_STATUS = constants.ORDER_STATUS;
 
 const CTRL = {};
-CTRL.getOrders = (req, res) => {
-  Order.find({'cart.userId':req.user.id})
-    .exec((err, orders) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          err
-        })
-      }
-      res.json({
-        ok: true,
-        orders,
-      });
-    });
+CTRL.getOrders = async (req, res) => {
+  console.log(`get orders`)
+  //res.send(`${JSON.stringify(req.body)}`)
+  const getOrderQuery = Order.find({'cart.userId': req.user.id});
+  getOrderQuery.then(async orders  => {
+        return Promise.all(
+          orders.map(async order =>{
+            const productTotals = await Promise.all(order.cart.items.map(async item => {
+              const product = await Product.findOne({"productId":item.productId});
+              return product.price * item.quantity
+            }))
+            const cartItems = await Promise.all(order.cart.items.map(async item =>{
+              const product = await Product.findOne({"productId":item.productId});
+              return { product: product, quantity: item.quantity}
+            }))
+            return {
+              cart: cartItems,
+              total: productTotals.reduce((accum, total) => accum+total, 0),
+              created_at: order.created_at,
+              status:order.status
+            }
+          })
+     )
+      })
+  .then((orders) =>{
+    //console.log(`orders are ${JSON.stringify(orders)}`);
+    res.status(200).json({
+      ok:true,
+      orders:orders
+    })
+  })
+      
+    .catch(err =>{
+      res.status(500)
+      .json({
+        ok:false, 
+        err: err
+      })
+    })
 };
 
 CTRL.getOrder = (req, res) => {
   const { orderId } = req.params;
-  Order.findById(orderId).exec((err, order) => {
+  const userId = req.user.id;
+  Order.findById(orderId).exec(async (err, order) => {
     if (err) {
       return res.status(500).json({
         ok: false,
         err
       })
     }
+    const cart = await Cart.findOne({userId: userId});
+    const total = cart.items.reduce((total, item) => total + item.quantity * item.product.price, 0);
     res.json({
       ok: true,
-      order,
+      order:{
+        total:total, 
+        created_at: order.created_at,
+        cart: cart,
+        status:order.status
+      },
     });
   });
 };
 
 CTRL.createOrder = async (req, res) => {
-  // validateStock(req.body.orderItems, (cartItems) => {
-  //   if (cartItems == false) {
-  //     return res.status(500).json({
-  //       ok: false,
-  //       msg: "The product is not available at the moment.",
-  //     });
-  //   }
-
-  //   const newOrder = new Order({
-  //     client: req.body.client,
-  //     serial: req.body.serial,
-  //     total: req.body.total,
-  //     orderItems: cartItems,
-  //   });
-
-  //   newOrder.save((err, order) => {
-  //     if (err) {
-  //       return res.status(500).json({
-  //         ok: false,
-  //         err,
-  //       });
-  //     }
-
-  //     return res.status(201).json({
-  //       ok: true,
-  //       order,
-  //     });
-  //   });
-  // });
+  
   const userId = req.user.id;
-  console.log(`user id: ${userId}`)
+  //console.log(`user id: ${userId}`)
   Cart.findOne({userId:userId})
   .then((cart) =>{
-    console.log(`cart is : ${JSON.stringify(cart)}`);
+   // console.log(`cart is : ${JSON.stringify(cart)}`);
         const order = new Order({
-        cart: cart
+        cart: cart, 
+        status: ORDER_STATUS.InProgress
           })
-        console.log(`new order is : ${JSON.stringify(order)}`);
+      //  console.log(`new order is : ${JSON.stringify(order)}`);
     order.save()
-    .then(()=>{
-        Cart.deleteOne({userId:userId})
-        .then(() => 
-            res.status(200)
-          .json({ok:true}))
-      .catch(err => res.status(500).json({ok:false, err:`failed to delete existing cart with error : ${err}`}))
-    })
+    .then(order=>res.status(201)
+          .json({ok:true, orderId:order._id}))
     .catch(err => res.status(500).json({
-          ok:false, err:'error saving new order'}))
+          ok:false, err:`error creating new order ${err}`}))
   })
   .catch(err =>{
     res.status(500)
     .json({
       ok:false,
-      err:'errror creating new order'
+      err:`error creating new order :${err}`
     })
   })
   

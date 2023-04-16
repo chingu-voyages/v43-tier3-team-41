@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { signupFields } from "./constants/formFields"
 import FormAction from "./FormAction";
 import Input from "./Input";
+import AppContext from '../../AppContext';
 
 const fields=signupFields;
 let fieldsState={};
@@ -10,7 +12,8 @@ fields.forEach(field => fieldsState[field.id]='');
 
 export default function Signup(){
   const [signupState,setSignupState]=useState(fieldsState);
-
+  const { backendUrl } = useContext(AppContext);
+  const navigate = useNavigate()
   const handleChange=(e)=>setSignupState({...signupState,[e.target.id]:e.target.value});
 
   const handleSubmit=(e)=>{
@@ -23,20 +26,22 @@ export default function Signup(){
   const createAccount=()=>{
     let signUpFields = {
       username:signupState['username'],
-      email:signupState['email'],
+      email:signupState['email-address'],
       password:signupState['password']
     }
-    fetch('https://pettopia-backend.onrender.com/api/v1/user', {
+    fetch(`${backendUrl}/api/v1/user`, {
       method:'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(signUpFields)
     })
     .then((res) => res.json())
-    .then(data => console.log(data.token));
+    .then(data => console.log(data.token))
+    .then(() => navigate(-1))
+    .catch(err => console.error(err))
   }
 
     return(
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="flex flex-col items-center  mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="">
         {
                 fields.map(field=>
