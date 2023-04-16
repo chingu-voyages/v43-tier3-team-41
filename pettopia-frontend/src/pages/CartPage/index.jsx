@@ -181,11 +181,11 @@ export default function CartPage() {
               >
                 <div className='grid grid-cols-3 col-span-4 col-start-2'>
                   <img
-                    className='md:w-32 rounded-[5%] w-50 h-50'
+                    className='md:w-32 rounded-[5%]'
                     src={cartItem.product.imageUrl}
                     alt='Product'
                   />
-                  <p className='font-bold col-span-2 text-left'>{cartItem.product.name}</p>
+                  <p className='text-sm md:text-lg font-bold col-span-2 text-left'>{cartItem.product.name}</p>
                 </div>
                 <div className='h-[50%]'>
                   <span>${cartItem.product.price}</span>
