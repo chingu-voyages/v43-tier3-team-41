@@ -15,7 +15,6 @@
 - Stripe integration for fulfilling orders
 - Searching products, filtering by different categories
 - Easy navigation between different pages
-- Ability to change UI theme
 
 ### Running the project
 - There are 2 separate projects - frontend and backend
