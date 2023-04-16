@@ -27,6 +27,14 @@ module.exports = {
           '.pag-btn:hover': {
             'background-color': '#2f353f',
             'border-color': '#2f353f'
+          },
+          'search-btn': {
+            'background-color':"white",
+            'border-color': "white",
+          },
+          'search-btn:hover': {
+            'background-color':"white",
+            'border-color': "white",
           }
         },
       },

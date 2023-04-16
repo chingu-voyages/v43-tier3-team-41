@@ -61,7 +61,8 @@ export default function Login(){
     // }, [authToken]);
 
     return(
-        <form className="flex flex-col items-center mt-8 space-y-6" onSubmit={handleSubmit}>
+        <div>
+        <form className="w-[60%] mx-auto mt-8 space-y-6" onSubmit={handleSubmit}>
         <div className="-space-y-px">
             {
                 fields.map(field=>
@@ -86,6 +87,7 @@ export default function Login(){
         <FormAction handleSubmit={handleSubmit} text="Login"/>
 
       </form>
+      </div>
     )
 }
 
