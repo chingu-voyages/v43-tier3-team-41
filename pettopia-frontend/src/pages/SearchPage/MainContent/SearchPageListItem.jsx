@@ -14,8 +14,8 @@ const SearchPageListItem = ({ item }) => {
   const {handleAddToCart} = useContext(SearchContext);
 
   return (
-    <li className="list-none shadow-md rounded-[5%] bg-white" key={item.productId} >
-      <div className='card w-[100%] bg-base-100 h-84 group/item pt-8'>
+    <li className="list-none shadow-md rounded-[5%] bg-white mb-5" key={item.productId} >
+      <div className='card w-[100%] bg-base-100 h-84 group/item'>
         <figure>
           <img style={{borderRadius: '5%'}} src={item.mainImageUrl} alt={item.name} />
         </figure>
