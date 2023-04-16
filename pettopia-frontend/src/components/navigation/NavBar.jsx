@@ -79,34 +79,34 @@ export default function NavBar() {
     <header className='w-100 bg-primary'>
       <div className='navbar container sticky z-10'>
         <div className='navbar-start'>
-          <div className='text-2xl mr-4'>
+          <div className='mr-4'>
             <a
               href='/'
-              className='normal-case text-2xl px-1 text-white min-w-[100px] flex items-center transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300'
+              className='normal-case text-lg md:text-2xl text-white min-w-[60px] flex items-center transition ease-in-out delay-50 hover:-translate-y-1 hover:scale-105 duration-300'
             >
               <img
-                className='inline-block'
+                className='inline-block h-[35px] w-[35px] md:h-[50px] md:w-[50x]'
                 src='/logo.png'
                 alt='logo'
                 height={'50px'}
                 width={'50px'}
               />
-              <span className='ml-2'>Pettopia</span>
+              <span className='ml-1 md:ml-2'>Pettopia</span>
             </a>
           </div>
-          <ul className='menu menu-horizontal px-1'>
+          <ul className='menu menu-horizontal'>
             <li>
               <Link
                 to='/search'
                 onClick={() => getAllProducts()}
-                className='text-white btn btn-outline normal-case'
+                className='text-white p-0 md:btn md:btn-outline md:text-white normal-case'
               >
                 All Products
               </Link>
             </li>
           </ul>
         </div>
-        <div className='navbar-end'>
+        <div className='navbar-end w-[40%] md:50%'>
           <div className='dropdown dropdown-end'>
             <label
               tabIndex={0}
@@ -137,7 +137,7 @@ export default function NavBar() {
                     />
                     <button
                       type='submit'
-                      className='rounded-full text-lg hover:cursor-pointer hover:bg-base-400 hover:text-xl absolute right-5 text-gray-400'
+                      className='rounded-full text-md md:text-lg hover:cursor-pointer hover:bg-base-400 hover:text-xl absolute right-5 text-gray-400'
                     >
                       <BsSearch />
                     </button>
@@ -146,7 +146,7 @@ export default function NavBar() {
               </div>
             </div>
           </div>
-          {theme === 'dark' && (
+          {/* {theme === 'dark' && (
             <li data-set-theme='light' onClick={() => setTheme('light')} className='list-none text-[#F3EEEE] text-xl btn btn-ghost btn-circle'>
               <FiSun />
             </li>
@@ -155,12 +155,12 @@ export default function NavBar() {
             <li data-set-theme='dark' onClick={() => setTheme('dark')} className='list-none text-[#F3EEEE] text-xl btn btn-ghost btn-circle'>
               <BsMoonStars />
             </li>
-          )}
+          )} */}
           {isUserloggedIn && (
             <>
               <div className='dropdown dropdown-end'>
                 <label tabIndex={0} className='btn btn-ghost btn-circle'>
-                  <BiUserCircle className='text-3xl text-white' />
+                  <BiUserCircle className='text-xl md:text-3xl text-[#F3EEEE]' />
                 </label>
                 <div
                   tabIndex={0}
@@ -181,7 +181,7 @@ export default function NavBar() {
                   <div className='indicator'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
-                      className='h-7 w-7'
+                      className='h-5 w-5'
                       fill='none'
                       viewBox='0 0 24 24'
                       stroke='#F3EEEE'
@@ -193,16 +193,16 @@ export default function NavBar() {
                         d='M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z'
                       />
                     </svg>
-                    <span className='badge badge-sm indicator-item'>
+                    <span className='badge badge-xs sm:badge-sm indicator-item'>
                       {cartItems.length}
                     </span>
                   </div>
                 </label>
                 <div
                   tabIndex={0}
-                  className='mt-3 card card-compact dropdown-content w-96 bg-base-100 shadow'
+                  className='mt-3 card card-compact dropdown-content w-80 md:w-96 bg-base-100 shadow'
                 >
-                  <div className='card-body w-96'>
+                  <div className='card-body w-80 md:w-96'>
                     <div className='overflow-y-auto max-h-72'>
                       {cartItems.length > 0 ? (
                         cartItems.map((item) => (
